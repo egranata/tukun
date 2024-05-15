@@ -1,0 +1,15 @@
+[package]
+name = "runner"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "tr"
+path = "src/main.rs"
+
+[dependencies]
+serde = { version = "1.0.197", features = ["derive"] }
+runtime = { path = "../runtime" }
+corelib = { path = "../corelib" }
+clap = { version = "4.5.4", features = ["derive", "unicode"] }
+bincode = "1.3.3"

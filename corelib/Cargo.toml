@@ -1,0 +1,11 @@
+[package]
+name = "corelib"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "corelib"
+path = "src/lib.rs"
+
+[dependencies]
+runtime = { path = "../runtime" }

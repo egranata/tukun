@@ -1,0 +1,6 @@
+/target
+/.vscode
+/test*
+__pycache__
+*.pyc
+a.out

@@ -1,0 +1,3 @@
+[workspace]
+members = ["runtime", "assembler", "corelib", "runner"]
+resolver = "2"

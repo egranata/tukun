@@ -1,0 +1,149 @@
+[
+    {
+        "name": "NOP",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    },
+    {
+        "name": "DUP",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    },
+    {
+        "name": "POP",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    },
+    {
+        "name": "PUSH",
+        "runtime_operands": ["u16"],
+        "builder_operands": ["u16"],
+        "operand_writers": ["*arg0"],
+        "is_terminal": false
+    },
+    {
+        "name": "FLOOKUP",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    },
+    {
+        "name": "TLOOKUP",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    },
+    {
+        "name": "CALL",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    },
+    {
+        "name": "TYPEOF",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    },
+    {
+        "name": "FROMSLOT",
+        "runtime_operands": ["u16"],
+        "builder_operands": ["u16"],
+        "operand_writers": ["*arg0"],
+        "is_terminal": false
+    },
+    {
+        "name": "TOSLOT",
+        "runtime_operands": ["u16"],
+        "builder_operands": ["u16"],
+        "operand_writers": ["*arg0"],
+        "is_terminal": false
+    },
+    {
+        "name": "ADD",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    },
+    {
+        "name": "EQUAL",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    },
+    {
+        "name": "JUMP",
+        "runtime_operands": ["u16"],
+        "builder_operands": ["crate::builder::BasicBlock"],
+        "operand_writers": ["arg0.offset() as u16"],
+        "is_terminal": true
+    },
+    {
+        "name": "JTRUE",
+        "runtime_operands": ["u16"],
+        "builder_operands": ["crate::builder::BasicBlock"],
+        "operand_writers": ["arg0.offset() as u16"],
+        "is_terminal": true
+    },
+    {
+        "name": "RET",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": true
+    },
+    {
+        "name": "MKARRTYPE",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    },
+    {
+        "name": "MKRECTYPE",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    },
+    {
+        "name": "NEWARR",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    },
+    {
+        "name": "ARRGET",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    },
+    {
+        "name": "ARRSET",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    },
+    {
+        "name": "ARRLEN",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    }
+]

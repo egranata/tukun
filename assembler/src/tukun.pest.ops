@@ -1,0 +1,23 @@
+stmt_NOP = {^"nop" }
+stmt_ADD = {^"add" }
+stmt_RET = {^"ret" }
+stmt_FLOOKUP = {^"flookup" }
+stmt_TLOOKUP = {^"tlookup" }
+stmt_CALL = {^"call" }
+stmt_NEWARR = {^"newarr" }
+stmt_EQUAL = {^"equal" }
+stmt_DUP = {^"dup" }
+stmt_POP = {^"pop" }
+stmt_ARRGET = {^"arrget" }
+stmt_ARRSET = {^"arrset" }
+stmt_ARRLEN = {^"arrlen" }
+stmt_TYPEOF = {^"typeof" }
+stmt_MKARRTYPE = {^"mkarrtype" }
+stmt_MKRECTYPE = {^"mkrectype" }
+stmt_PUSH = {^"push" ~ #idx = (number | string)}
+stmt_JUMP = {^"jump" ~ #tgt = label}
+stmt_JTRUE = {^"jtrue" ~ #tgt = label}
+stmt_FCALL = {^"fcall" ~ #tgt = string}
+stmt_FROMSLOT = {^"fromslot" ~ #idx = number}
+stmt_TOSLOT = {^"toslot" ~ #idx = number}
+statement = {stmt_NOP | stmt_ADD | stmt_RET | stmt_FLOOKUP | stmt_TLOOKUP | stmt_CALL | stmt_NEWARR | stmt_EQUAL | stmt_DUP | stmt_POP | stmt_ARRGET | stmt_ARRSET | stmt_ARRLEN | stmt_TYPEOF | stmt_MKARRTYPE | stmt_MKRECTYPE | stmt_PUSH | stmt_JUMP | stmt_JTRUE | stmt_FCALL | stmt_FROMSLOT | stmt_TOSLOT}

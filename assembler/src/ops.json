@@ -1,0 +1,112 @@
+[
+    {
+        "name": "NOP",
+        "pest_args": "",
+        "ast_args": []
+    },
+    {
+        "name": "ADD",
+        "pest_args": "",
+        "ast_args": []
+    },
+    {
+        "name": "RET",
+        "pest_args": "",
+        "ast_args": []
+    },
+    {
+        "name": "FLOOKUP",
+        "pest_args": "",
+        "ast_args": []
+    },
+    {
+        "name": "TLOOKUP",
+        "pest_args": "",
+        "ast_args": []
+    },
+    {
+        "name": "CALL",
+        "pest_args": "",
+        "ast_args": []
+    },
+    {
+        "name": "NEWARR",
+        "pest_args": "",
+        "ast_args": []
+    },
+    {
+        "name": "EQUAL",
+        "pest_args": "",
+        "ast_args": []
+    },
+    {
+        "name": "DUP",
+        "pest_args": "",
+        "ast_args": []
+    },
+    {
+        "name": "POP",
+        "pest_args": "",
+        "ast_args": []
+    },
+    {
+        "name": "ARRGET",
+        "pest_args": "",
+        "ast_args": []
+    },
+    {
+        "name": "ARRSET",
+        "pest_args": "",
+        "ast_args": []
+    },
+    {
+        "name": "ARRLEN",
+        "pest_args": "",
+        "ast_args": []
+    },
+    {
+        "name": "TYPEOF",
+        "pest_args": "",
+        "ast_args": []
+    },
+    {
+        "name": "MKARRTYPE",
+        "pest_args": "",
+        "ast_args": []
+    },
+    {
+        "name": "MKRECTYPE",
+        "pest_args": "",
+        "ast_args": []
+    },
+    {
+        "name": "PUSH",
+        "pest_args": "#idx = (number | string)",
+        "ast_args": ["Either<u16, String>"]
+    },
+    {
+        "name": "JUMP",
+        "pest_args": "#tgt = label",
+        "ast_args": ["String"]
+    },
+    {
+        "name": "JTRUE",
+        "pest_args": "#tgt = label",
+        "ast_args": ["String"]
+    },
+    {
+        "name": "FCALL",
+        "pest_args": "#tgt = string",
+        "ast_args": ["String"]
+    },
+    {
+        "name": "FROMSLOT",
+        "pest_args": "#idx = number",
+        "ast_args": ["u16"]
+    },
+    {
+        "name": "TOSLOT",
+        "pest_args": "#idx = number",
+        "ast_args": ["u16"]
+    }
+]
