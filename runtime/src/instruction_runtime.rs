@@ -12,6 +12,7 @@ pub enum RuntimeInstruction {
     TOSLOT(u16),
     ADD,
     EQUAL,
+    NOT,
     JUMP(u16),
     JTRUE(u16),
     RET,
@@ -52,6 +53,7 @@ impl RuntimeInstruction {
             }
             crate::opcodes::Opcode::ADD => (RuntimeInstruction::ADD, idx),
             crate::opcodes::Opcode::EQUAL => (RuntimeInstruction::EQUAL, idx),
+            crate::opcodes::Opcode::NOT => (RuntimeInstruction::NOT, idx),
             crate::opcodes::Opcode::JUMP => {
                 let arg0 = bc.read_u16(idx);
                 idx += 2;

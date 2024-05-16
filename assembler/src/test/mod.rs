@@ -3,7 +3,7 @@ use runtime::{
     module_definition::ModuleDef,
     runloop,
     runtime_module::RuntimeModule,
-    rv_arr, rv_int,
+    rv_arr, rv_bool, rv_int,
     types::{array::ArrayType, record::RecordType, RuntimeType},
     values::RuntimeValue,
 };
@@ -528,4 +528,23 @@ fn main # a function
     # an empty comment here
 "#;
     run_source(input, &[rv_int!(6)]);
+}
+
+#[test]
+fn test_not() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+%const "five" = 5
+%const "four" = 4
+fn main
+  :entry
+    push "five"
+    push "five"
+    equal not
+    push "five"
+    push "four"
+    equal not
+    ret
+"#;
+    run_source(input, &[rv_bool!(true), rv_bool!(false)]);
 }

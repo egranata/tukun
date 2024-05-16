@@ -16,6 +16,7 @@ pub enum Instruction {
     CALL,
     NEWARR,
     EQUAL,
+    NOT,
     DUP,
     POP,
     ARRGET,

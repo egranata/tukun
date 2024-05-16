@@ -27,6 +27,7 @@ impl super::Instruction {
         trivial_ast!(rule, stmt_TYPEOF, TYPEOF);
         trivial_ast!(rule, stmt_MKARRTYPE, MKARRTYPE);
         trivial_ast!(rule, stmt_MKRECTYPE, MKRECTYPE);
+        trivial_ast!(rule, stmt_NOT, NOT);
 
         if matches!(rule, Rule::stmt_FCALL) {
             return super::fcall::from_parse_tree(p);

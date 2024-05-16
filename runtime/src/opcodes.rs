@@ -13,6 +13,7 @@ pub enum Opcode {
     TOSLOT,
     ADD,
     EQUAL,
+    NOT,
     JUMP,
     JTRUE,
     RET,

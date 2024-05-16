@@ -12,6 +12,7 @@ pub enum InstructionDef {
     TOSLOT(u16),
     ADD,
     EQUAL,
+    NOT,
     JUMP(crate::builder::BasicBlock),
     JTRUE(crate::builder::BasicBlock),
     RET,
@@ -37,6 +38,7 @@ impl InstructionDef {
             InstructionDef::TOSLOT(_) => 1 + core::mem::size_of::<u16>(),
             InstructionDef::ADD => 1,
             InstructionDef::EQUAL => 1,
+            InstructionDef::NOT => 1,
             InstructionDef::JUMP(_) => 1 + core::mem::size_of::<u16>(),
             InstructionDef::JTRUE(_) => 1 + core::mem::size_of::<u16>(),
             InstructionDef::RET => 1,
@@ -64,6 +66,7 @@ impl InstructionDef {
             InstructionDef::TOSLOT(_) => false,
             InstructionDef::ADD => false,
             InstructionDef::EQUAL => false,
+            InstructionDef::NOT => false,
             InstructionDef::JUMP(_) => true,
             InstructionDef::JTRUE(_) => true,
             InstructionDef::RET => true,
@@ -117,6 +120,9 @@ impl InstructionDef {
             }
             InstructionDef::EQUAL => {
                 bc.write_u8(u8::from(crate::opcodes::Opcode::EQUAL));
+            }
+            InstructionDef::NOT => {
+                bc.write_u8(u8::from(crate::opcodes::Opcode::NOT));
             }
             InstructionDef::JUMP(arg0) => {
                 bc.write_u8(u8::from(crate::opcodes::Opcode::JUMP));

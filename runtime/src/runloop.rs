@@ -110,6 +110,10 @@ fn bytecode_run_loop<'a>(ctx: &'a BytecodeContext<'a>, env: &mut Environment) {
                     cur_ptr = dst as usize;
                 }
             }
+            RuntimeInstruction::NOT => {
+                let b = typed_pop!(env, inst, RuntimeValue::Logical);
+                env.runtime_stack.push(crate::rv_bool!(!b));
+            }
             RuntimeInstruction::RET => return,
             RuntimeInstruction::FLOOKUP => {
                 let n = typed_pop!(env, inst, RuntimeValue::String);

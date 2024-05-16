@@ -48,6 +48,12 @@
         "trivial_lowering": true
     },
     {
+        "name": "NOT",
+        "pest_args": "",
+        "ast_args": [],
+        "trivial_lowering": true
+    },
+    {
         "name": "DUP",
         "pest_args": "",
         "ast_args": [],
