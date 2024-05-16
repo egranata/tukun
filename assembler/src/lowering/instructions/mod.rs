@@ -4,11 +4,8 @@ mod jtrue;
 mod jump;
 mod push;
 mod toslot;
-
-use runtime::instruction_def::InstructionDef;
-
 use crate::ast::{instructions::Instruction, module::Module};
-
+use runtime::instruction_def::InstructionDef;
 macro_rules! trivial_lowering {
     ($input:expr, $candidate:ident) => {
         if matches!($input, Instruction::$candidate) {
@@ -16,31 +13,29 @@ macro_rules! trivial_lowering {
         }
     };
 }
-
 pub(crate) fn lower_instruction(
     mdef: &Module,
     input: &Instruction,
     b: &mut runtime::builder::Builder,
 ) -> Vec<InstructionDef> {
-    trivial_lowering!(input, ADD);
-    trivial_lowering!(input, DUP);
     trivial_lowering!(input, NOP);
-    trivial_lowering!(input, POP);
+    trivial_lowering!(input, ADD);
     trivial_lowering!(input, RET);
     trivial_lowering!(input, FLOOKUP);
     trivial_lowering!(input, TLOOKUP);
     trivial_lowering!(input, CALL);
     trivial_lowering!(input, NEWARR);
     trivial_lowering!(input, EQUAL);
+    trivial_lowering!(input, DUP);
+    trivial_lowering!(input, POP);
     trivial_lowering!(input, ARRGET);
     trivial_lowering!(input, ARRSET);
     trivial_lowering!(input, ARRLEN);
     trivial_lowering!(input, TYPEOF);
     trivial_lowering!(input, MKARRTYPE);
     trivial_lowering!(input, MKRECTYPE);
-
-    if let Instruction::FCALL(_) = input {
-        return fcall::lower_instruction(mdef, input, b);
+    if let Instruction::PUSH(_) = input {
+        return push::lower_instruction(mdef, input, b);
     }
     if let Instruction::JUMP(_) = input {
         return jump::lower_instruction(mdef, input, b);
@@ -48,14 +43,14 @@ pub(crate) fn lower_instruction(
     if let Instruction::JTRUE(_) = input {
         return jtrue::lower_instruction(mdef, input, b);
     }
+    if let Instruction::FCALL(_) = input {
+        return fcall::lower_instruction(mdef, input, b);
+    }
     if let Instruction::FROMSLOT(_) = input {
         return fromslot::lower_instruction(mdef, input, b);
     }
     if let Instruction::TOSLOT(_) = input {
         return toslot::lower_instruction(mdef, input, b);
-    }
-    if let Instruction::PUSH(_) = input {
-        return push::lower_instruction(mdef, input, b);
     }
     panic!(
         "instruction {:?} should have been handled but is not",
