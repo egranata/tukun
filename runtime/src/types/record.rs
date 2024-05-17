@@ -32,3 +32,22 @@ impl RecordType {
         TypeDef::new(name, &RuntimeType::Record(Box::new(self.clone())))
     }
 }
+
+impl From<&RecordType> for String {
+    fn from(value: &RecordType) -> Self {
+        format!(
+            "type::record[e=({})]",
+            value
+                .types
+                .iter()
+                .map(String::from)
+                .collect::<Vec<String>>()
+                .join(", ")
+        )
+    }
+}
+impl From<RecordType> for String {
+    fn from(value: RecordType) -> Self {
+        String::from(&value)
+    }
+}

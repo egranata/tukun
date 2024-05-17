@@ -34,3 +34,14 @@ impl ArrayType {
         TypeDef::new(name, &RuntimeType::Arr(Box::new(self.clone())))
     }
 }
+
+impl From<&ArrayType> for String {
+    fn from(value: &ArrayType) -> Self {
+        format!("type::array[l={},et={}]", value.len(), value.value_type())
+    }
+}
+impl From<ArrayType> for String {
+    fn from(value: ArrayType) -> Self {
+        String::from(&value)
+    }
+}

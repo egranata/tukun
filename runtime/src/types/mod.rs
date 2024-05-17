@@ -21,16 +21,27 @@ impl RuntimeType {
     }
 }
 
+impl From<&RuntimeType> for String {
+    fn from(value: &RuntimeType) -> Self {
+        match value {
+            RuntimeType::Integer => String::from("type::integer"),
+            RuntimeType::Logical => String::from("type::logical"),
+            RuntimeType::String => String::from("type::string"),
+            RuntimeType::Function => String::from("type::function"),
+            RuntimeType::Arr(at) => String::from(at.as_ref()),
+            RuntimeType::Record(rt) => String::from(rt.as_ref()),
+            RuntimeType::Type(t) => format!("type::type[t={t}]"),
+        }
+    }
+}
+impl From<RuntimeType> for String {
+    fn from(value: RuntimeType) -> Self {
+        String::from(&value)
+    }
+}
+
 impl std::fmt::Display for RuntimeType {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            RuntimeType::Integer => write!(f, "type::integer"),
-            RuntimeType::Logical => write!(f, "type::logical"),
-            RuntimeType::String => write!(f, "type::string"),
-            RuntimeType::Function => write!(f, "type::function"),
-            RuntimeType::Arr(at) => write!(f, "type::array[t={},l={}]", at.value_type, at.len),
-            RuntimeType::Record(rt) => write!(f, "type::record[l={}]", rt.len()),
-            RuntimeType::Type(t) => write!(f, "type::type[t={}]", t),
-        }
+        write!(f, "{}", String::from(self))
     }
 }
