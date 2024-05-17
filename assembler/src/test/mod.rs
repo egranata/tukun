@@ -614,3 +614,17 @@ fn main
 "#;
     run_source(input, &[rv_bool!(true), rv_bool!(false)]);
 }
+
+#[test]
+#[should_panic(expected = "type name corelib.integer is undefined")]
+fn test_type_remoting() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+# does not work because cannot resolve typename from external module
+%typedef "fourint" = array(4,"corelib.integer")
+fn main
+  :entry
+    ret
+"#;
+    run_source(input, &[]);
+}
