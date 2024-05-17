@@ -2,6 +2,8 @@
 
 import json
 
+from gen.util import write_header
+
 class Opcode(object):
     def __init__(self, node):
         self.attributes = {}
@@ -16,6 +18,7 @@ class OpcodeVisitor(object):
     def __init__(self, opcodes, dest):
         self.ops = opcodes
         self.dest = dest
+        write_header(self.dest)
     
     def prefix(self):
         pass
