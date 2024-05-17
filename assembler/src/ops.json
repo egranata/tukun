@@ -3,144 +3,168 @@
         "name": "NOP",
         "pest_args": "",
         "ast_args": [],
+        "trivial_ast": true,
         "trivial_lowering": true
     },
     {
         "name": "ADD",
         "pest_args": "",
         "ast_args": [],
+        "trivial_ast": true,
         "trivial_lowering": true
     },
     {
         "name": "RET",
         "pest_args": "",
         "ast_args": [],
+        "trivial_ast": true,
         "trivial_lowering": true
     },
     {
         "name": "FLOOKUP",
         "pest_args": "",
         "ast_args": [],
+        "trivial_ast": true,
         "trivial_lowering": true
     },
     {
         "name": "TLOOKUP",
         "pest_args": "",
         "ast_args": [],
+        "trivial_ast": true,
         "trivial_lowering": true
     },
     {
         "name": "CALL",
         "pest_args": "",
         "ast_args": [],
+        "trivial_ast": true,
         "trivial_lowering": true
     },
     {
         "name": "NEWARR",
         "pest_args": "",
         "ast_args": [],
+        "trivial_ast": true,
         "trivial_lowering": true
     },
     {
         "name": "NEWREC",
         "pest_args": "",
         "ast_args": [],
+        "trivial_ast": true,
         "trivial_lowering": true
     },
     {
         "name": "EQUAL",
         "pest_args": "",
         "ast_args": [],
+        "trivial_ast": true,
         "trivial_lowering": true
     },
     {
         "name": "NOT",
         "pest_args": "",
         "ast_args": [],
+        "trivial_ast": true,
         "trivial_lowering": true
     },
     {
         "name": "DUP",
         "pest_args": "",
         "ast_args": [],
+        "trivial_ast": true,
         "trivial_lowering": true
     },
     {
         "name": "POP",
         "pest_args": "",
         "ast_args": [],
+        "trivial_ast": true,
         "trivial_lowering": true
     },
     {
         "name": "ARRGET",
         "pest_args": "",
         "ast_args": [],
+        "trivial_ast": true,
         "trivial_lowering": true
     },
     {
         "name": "ARRSET",
         "pest_args": "",
         "ast_args": [],
+        "trivial_ast": true,
         "trivial_lowering": true
     },
     {
         "name": "ARRLEN",
         "pest_args": "",
         "ast_args": [],
+        "trivial_ast": true,
         "trivial_lowering": true
     },
     {
         "name": "TYPEOF",
         "pest_args": "",
         "ast_args": [],
+        "trivial_ast": true,
         "trivial_lowering": true
     },
     {
         "name": "MKARRTYPE",
         "pest_args": "",
         "ast_args": [],
+        "trivial_ast": true,
         "trivial_lowering": true
     },
     {
         "name": "MKRECTYPE",
         "pest_args": "",
         "ast_args": [],
+        "trivial_ast": true,
         "trivial_lowering": true
     },
     {
         "name": "PUSH",
         "pest_args": "#idx = (number | string)",
         "ast_args": ["Either<u16, String>"],
+        "trivial_ast": false,
         "trivial_lowering": false
     },
     {
         "name": "JUMP",
         "pest_args": "#tgt = label",
         "ast_args": ["String"],
+        "trivial_ast": false,
         "trivial_lowering": false
     },
     {
         "name": "JTRUE",
         "pest_args": "#tgt = label",
         "ast_args": ["String"],
+        "trivial_ast": false,
         "trivial_lowering": false
     },
     {
         "name": "FCALL",
         "pest_args": "#tgt = string",
         "ast_args": ["String"],
+        "trivial_ast": false,
         "trivial_lowering": false
     },
     {
         "name": "FROMSLOT",
         "pest_args": "#idx = number",
         "ast_args": ["u16"],
+        "trivial_ast": false,
         "trivial_lowering": false
     },
     {
         "name": "TOSLOT",
         "pest_args": "#idx = number",
         "ast_args": ["u16"],
+        "trivial_ast": false,
         "trivial_lowering": false
     }
 ]
