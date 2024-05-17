@@ -15,8 +15,9 @@ char = {
 
 type_name = {string}
 type_array = {^"array(" ~ #count = number ~ "," ~ #of = type_descriptor ~ ")"}
+type_record = {^"record(" ~ type_descriptor ~ ("," ~ type_descriptor)* ~ ")"}
 
-type_descriptor = {type_name | type_array}
+type_descriptor = {type_name | type_array | type_record}
 
 attribute_module_name = {^"@modname" ~ #value = string}
 interned_integer = {^"%const" ~ #name = string ~ "=" ~ #value = number}

@@ -530,6 +530,35 @@ fn main
 }
 
 #[test]
+fn test_newrec_from_decl() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+%typedef "rec" = record("integer", "logical", "string")
+%const "three" = 3
+%const "four" = 4
+%const "hello" = "hi"
+fn main
+  :entry
+    push "three"
+    dup
+    push "four"
+    equal
+    push "hello"
+    push "com.tukunc.testmodule.rec"
+    tlookup
+    newrec
+    ret
+"#;
+    let rt = RecordType::new(&[
+        RuntimeType::Integer,
+        RuntimeType::Logical,
+        RuntimeType::String,
+    ]);
+    let rv = Record::new(rt, &[rv_int!(3), rv_bool!(false), rv_str!("hi")]);
+    run_source(input, &[RuntimeValue::Record(rv)]);
+}
+
+#[test]
 fn test_decl_arrtype() {
     let input = r#"
 @modname "com.tukunc.testmodule"

@@ -6,6 +6,7 @@ use crate::{ast::parse_string_trim, parser::Rule, result::AssemblerResult};
 pub(crate) enum ValueType {
     B(BuiltinType),
     A(Box<ArrayType>),
+    R(Box<RecordType>),
 }
 
 impl ValueType {
@@ -29,6 +30,10 @@ impl ValueType {
                 Rule::type_array => {
                     let underlying_type = ArrayType::from_parse_tree(bb, type_map)?;
                     Ok(ValueType::A(Box::new(underlying_type)))
+                }
+                Rule::type_record => {
+                    let underlying_type = RecordType::from_parse_tree(bb, type_map)?;
+                    Ok(ValueType::R(Box::new(underlying_type)))
                 }
                 _ => Err(crate::result::AssemblerError::AstGenerationError(format!(
                     "unexpected typedef result {}",
@@ -76,6 +81,41 @@ impl ArrayType {
         let content = f.find_first_tagged("of").expect("need element type");
         let vt = ValueType::from_parse_tree(content, type_map)?;
         Ok(Self { len, vt })
+    }
+}
+
+impl RecordType {
+    fn from_parse_tree(
+        p: pest::iterators::Pair<'_, Rule>,
+        type_map: &HashMap<String, ValueType>,
+    ) -> AssemblerResult<Self> {
+        assert!(p.as_rule() == Rule::type_record);
+        let f = p.into_inner();
+        let et: Vec<ValueType> = f
+            .map(|i| ValueType::from_parse_tree(i, type_map).expect("invalid element type"))
+            .collect();
+        Ok(Self { et })
+    }
+}
+
+#[derive(Clone, Debug)]
+pub(crate) struct RecordType {
+    et: Vec<ValueType>,
+}
+
+impl RecordType {
+    #[allow(dead_code)]
+    pub fn len(&self) -> usize {
+        self.et.len()
+    }
+
+    #[allow(dead_code)]
+    pub fn element_at(&self, idx: usize) -> &ValueType {
+        &self.et[idx]
+    }
+
+    pub fn slice(&self) -> &[ValueType] {
+        &self.et
     }
 }
 

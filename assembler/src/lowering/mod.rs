@@ -4,7 +4,7 @@ use runtime::{
     builder::{BasicBlock, Builder},
     intern_value::InternValue,
     module_definition::{FunctionDef, ModuleDef},
-    types::{array::ArrayType, typedef::TypeDef, RuntimeType},
+    types::{array::ArrayType, record::RecordType, typedef::TypeDef, RuntimeType},
 };
 
 use crate::ast::{
@@ -24,6 +24,14 @@ fn lower_type(input: &ValueType) -> RuntimeType {
             let et = at.value_type();
             let et = lower_type(et);
             RuntimeType::Arr(Box::new(ArrayType::new(et, at.len())))
+        }
+        ValueType::R(rt) => {
+            let et = rt
+                .slice()
+                .iter()
+                .map(lower_type)
+                .collect::<Vec<RuntimeType>>();
+            RuntimeType::Record(Box::new(RecordType::new(&et)))
         }
     }
 }
