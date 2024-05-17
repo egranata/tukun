@@ -3,9 +3,9 @@ use runtime::{
     module_definition::ModuleDef,
     runloop,
     runtime_module::RuntimeModule,
-    rv_arr, rv_bool, rv_int,
+    rv_arr, rv_bool, rv_int, rv_str,
     types::{array::ArrayType, record::RecordType, RuntimeType},
-    values::RuntimeValue,
+    values::{record::Record, RuntimeValue},
 };
 
 use crate::assembler::do_assemble;
@@ -490,6 +490,43 @@ fn main
             ]),
         )))],
     );
+}
+
+#[test]
+fn test_newrec() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+%const "integer" = "corelib.integer"
+%const "string" = "corelib.string"
+%const "logical" = "corelib.logical"
+%const "three" = 3
+%const "four" = 4
+%const "hello" = "hi"
+fn main
+  :entry
+    push "four"
+    dup
+    dup
+    equal
+    push "hello"
+    push "integer"
+    tlookup
+    push "logical"
+    tlookup
+    push "string"
+    tlookup
+    push "three"
+    mkrectype
+    newrec
+    ret
+"#;
+    let rt = RecordType::new(&[
+        RuntimeType::Integer,
+        RuntimeType::Logical,
+        RuntimeType::String,
+    ]);
+    let rv = Record::new(rt, &[rv_int!(4), rv_bool!(true), rv_str!("hi")]);
+    run_source(input, &[RuntimeValue::Record(rv)]);
 }
 
 #[test]

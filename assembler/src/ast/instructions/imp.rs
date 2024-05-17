@@ -20,6 +20,7 @@ impl super::Instruction {
         trivial_ast!(rule, stmt_TLOOKUP, TLOOKUP);
         trivial_ast!(rule, stmt_CALL, CALL);
         trivial_ast!(rule, stmt_NEWARR, NEWARR);
+        trivial_ast!(rule, stmt_NEWREC, NEWREC);
         trivial_ast!(rule, stmt_EQUAL, EQUAL);
         trivial_ast!(rule, stmt_ARRGET, ARRGET);
         trivial_ast!(rule, stmt_ARRSET, ARRSET);

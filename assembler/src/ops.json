@@ -42,6 +42,12 @@
         "trivial_lowering": true
     },
     {
+        "name": "NEWREC",
+        "pest_args": "",
+        "ast_args": [],
+        "trivial_lowering": true
+    },
+    {
         "name": "EQUAL",
         "pest_args": "",
         "ast_args": [],

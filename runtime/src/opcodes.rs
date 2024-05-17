@@ -23,6 +23,7 @@ pub enum Opcode {
     ARRGET,
     ARRSET,
     ARRLEN,
+    NEWREC,
     MAX,
 }
 impl From<u8> for Opcode {

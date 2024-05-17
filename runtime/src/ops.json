@@ -152,5 +152,12 @@
         "builder_operands": [],
         "operand_writers": [],
         "is_terminal": false
+    },
+    {
+        "name": "NEWREC",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
     }
 ]

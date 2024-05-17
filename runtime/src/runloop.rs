@@ -6,7 +6,7 @@ use crate::{
     log_debug, log_subsystem,
     runtime_module::{RuntimeCallable, RuntimeModule},
     types::{array::ArrayType, record::RecordType, RuntimeType},
-    values::{array::Array, RuntimeValue},
+    values::{array::Array, record::Record, RuntimeValue},
 };
 
 static LOG_RUNLOOP: LogSubsystem = log_subsystem!("runloop", crate::log::LogLevel::Error);
@@ -174,6 +174,22 @@ fn bytecode_run_loop<'a>(ctx: &'a BytecodeContext<'a>, env: &mut Environment) {
                     env.runtime_stack.push(RuntimeValue::Arr(arr));
                 } else {
                     panic!("invalid type: expected array");
+                }
+            }
+            RuntimeInstruction::NEWREC => {
+                let rt = typed_pop!(env, inst, RuntimeValue::Type);
+                if let RuntimeType::Record(rt) = rt {
+                    let len = rt.len();
+                    let mut values = Vec::<RuntimeValue>::with_capacity(len);
+                    for i in 0..len {
+                        let val = stack_pop!(env, inst);
+                        assert!(val.get_type() == *rt.get(len - i - 1));
+                        values.insert(0, val);
+                    }
+                    let rc = Record::new(*rt, &values);
+                    env.runtime_stack.push(RuntimeValue::Record(rc));
+                } else {
+                    panic!("invalid type: expected record");
                 }
             }
             RuntimeInstruction::ARRGET => {

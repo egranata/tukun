@@ -80,10 +80,11 @@ impl Module {
 
 impl Module {
     pub(crate) fn constant_idx_by_name(&self, name: &str) -> usize {
+        #[allow(clippy::expect_fun_call)]
         *self
             .constant_names
             .get(name)
-            .expect("invalid constant name")
+            .expect(&format!("invalid const name {}", name))
     }
 
     pub(crate) fn add_constant(&mut self, c: Constant) -> InternValue {

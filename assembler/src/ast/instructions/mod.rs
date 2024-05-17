@@ -15,6 +15,7 @@ pub enum Instruction {
     TLOOKUP,
     CALL,
     NEWARR,
+    NEWREC,
     EQUAL,
     NOT,
     DUP,

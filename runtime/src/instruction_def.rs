@@ -22,6 +22,7 @@ pub enum InstructionDef {
     ARRGET,
     ARRSET,
     ARRLEN,
+    NEWREC,
 }
 impl InstructionDef {
     pub fn runtime_size(&self) -> usize {
@@ -48,6 +49,7 @@ impl InstructionDef {
             InstructionDef::ARRGET => 1,
             InstructionDef::ARRSET => 1,
             InstructionDef::ARRLEN => 1,
+            InstructionDef::NEWREC => 1,
         }
     }
 }
@@ -76,6 +78,7 @@ impl InstructionDef {
             InstructionDef::ARRGET => false,
             InstructionDef::ARRSET => false,
             InstructionDef::ARRLEN => false,
+            InstructionDef::NEWREC => false,
         }
     }
 }
@@ -152,6 +155,9 @@ impl InstructionDef {
             }
             InstructionDef::ARRLEN => {
                 bc.write_u8(u8::from(crate::opcodes::Opcode::ARRLEN));
+            }
+            InstructionDef::NEWREC => {
+                bc.write_u8(u8::from(crate::opcodes::Opcode::NEWREC));
             }
         }
     }

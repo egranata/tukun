@@ -22,6 +22,7 @@ pub enum RuntimeInstruction {
     ARRGET,
     ARRSET,
     ARRLEN,
+    NEWREC,
 }
 impl RuntimeInstruction {
     pub fn from_bytecode(bc: &crate::bytecode::Bytecode, i: usize) -> (RuntimeInstruction, usize) {
@@ -71,6 +72,7 @@ impl RuntimeInstruction {
             crate::opcodes::Opcode::ARRGET => (RuntimeInstruction::ARRGET, idx),
             crate::opcodes::Opcode::ARRSET => (RuntimeInstruction::ARRSET, idx),
             crate::opcodes::Opcode::ARRLEN => (RuntimeInstruction::ARRLEN, idx),
+            crate::opcodes::Opcode::NEWREC => (RuntimeInstruction::NEWREC, idx),
             _ => {
                 panic!("invalid opcode value")
             }
