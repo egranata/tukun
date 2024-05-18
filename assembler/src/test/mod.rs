@@ -520,12 +520,7 @@ fn main
     newrec
     ret
 "#;
-    let rt = RecordType::new(&[
-        RuntimeType::Integer,
-        RuntimeType::Logical,
-        RuntimeType::String,
-    ]);
-    let rv = Record::new(rt, &[rv_int!(4), rv_bool!(true), rv_str!("hi")]);
+    let rv = Record::new_inferred(&[rv_int!(4), rv_bool!(true), rv_str!("hi")]);
     run_source(input, &[RuntimeValue::Record(rv)]);
 }
 
@@ -549,12 +544,7 @@ fn main
     newrec
     ret
 "#;
-    let rt = RecordType::new(&[
-        RuntimeType::Integer,
-        RuntimeType::Logical,
-        RuntimeType::String,
-    ]);
-    let rv = Record::new(rt, &[rv_int!(3), rv_bool!(false), rv_str!("hi")]);
+    let rv = Record::new_inferred(&[rv_int!(3), rv_bool!(false), rv_str!("hi")]);
     run_source(input, &[RuntimeValue::Record(rv)]);
 }
 

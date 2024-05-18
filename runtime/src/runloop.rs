@@ -181,12 +181,11 @@ fn bytecode_run_loop<'a>(ctx: &'a BytecodeContext<'a>, env: &mut Environment) {
                 if let RuntimeType::Record(rt) = rt {
                     let len = rt.len();
                     let mut values = Vec::<RuntimeValue>::with_capacity(len);
-                    for i in 0..len {
+                    for _ in 0..len {
                         let val = stack_pop!(env, inst);
-                        assert!(val.get_type() == *rt.get(len - i - 1));
                         values.insert(0, val);
                     }
-                    let rc = Record::new(*rt, &values);
+                    let rc = Record::new_typed(*rt, &values);
                     env.runtime_stack.push(RuntimeValue::Record(rc));
                 } else {
                     panic!("invalid type: expected record");

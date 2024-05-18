@@ -48,7 +48,7 @@ impl PartialEq for Record {
 impl Eq for Record {}
 
 impl Record {
-    pub fn new(t: RecordType, v: &[RuntimeValue]) -> Self {
+    pub fn new_typed(t: RecordType, v: &[RuntimeValue]) -> Self {
         assert!(t.types.len() == v.len());
         for (vt, tt) in std::iter::zip(v.iter(), t.types.iter()) {
             assert!(vt.get_type() == *tt);
@@ -60,6 +60,15 @@ impl Record {
                 values: v.to_owned(),
             })),
         }
+    }
+
+    pub fn new_inferred(v: &[RuntimeValue]) -> Self {
+        let et: Vec<RuntimeType> = v
+            .iter()
+            .map(RuntimeValue::get_type)
+            .collect::<Vec<RuntimeType>>();
+        let rt = RecordType::new(&et);
+        Self::new_typed(rt, v)
     }
 
     pub fn len(&self) -> usize {
