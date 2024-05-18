@@ -204,6 +204,19 @@ fn bytecode_run_loop<'a>(ctx: &'a BytecodeContext<'a>, env: &mut Environment) {
                 arr.set(idx as usize, &val);
                 env.runtime_stack.push(RuntimeValue::Arr(arr));
             }
+            RuntimeInstruction::RECGET => {
+                let idx = typed_pop!(env, inst, RuntimeValue::Integer);
+                let rec = typed_pop!(env, inst, RuntimeValue::Record);
+                let val = rec.get(idx as usize);
+                env.runtime_stack.push(val);
+            }
+            RuntimeInstruction::RECSET => {
+                let val = env.runtime_stack.pop();
+                let idx = typed_pop!(env, inst, RuntimeValue::Integer);
+                let mut rec = typed_pop!(env, inst, RuntimeValue::Record);
+                rec.set(idx as usize, &val);
+                env.runtime_stack.push(RuntimeValue::Record(rec));
+            }
             RuntimeInstruction::ARRLEN => {
                 let arr = typed_pop!(env, inst, RuntimeValue::Arr);
                 let len = RuntimeValue::Integer(arr.len() as u64);

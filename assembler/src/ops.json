@@ -105,6 +105,20 @@
         "trivial_lowering": true
     },
     {
+        "name": "RECGET",
+        "pest_args": "",
+        "ast_args": [],
+        "trivial_ast": true,
+        "trivial_lowering": true
+    },
+    {
+        "name": "RECSET",
+        "pest_args": "",
+        "ast_args": [],
+        "trivial_ast": true,
+        "trivial_lowering": true
+    },
+    {
         "name": "TYPEOF",
         "pest_args": "",
         "ast_args": [],

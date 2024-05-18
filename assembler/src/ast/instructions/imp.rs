@@ -26,6 +26,8 @@ impl super::Instruction {
         trivial_ast!(rule, stmt_ARRGET, ARRGET);
         trivial_ast!(rule, stmt_ARRSET, ARRSET);
         trivial_ast!(rule, stmt_ARRLEN, ARRLEN);
+        trivial_ast!(rule, stmt_RECGET, RECGET);
+        trivial_ast!(rule, stmt_RECSET, RECSET);
         trivial_ast!(rule, stmt_TYPEOF, TYPEOF);
         trivial_ast!(rule, stmt_MKARRTYPE, MKARRTYPE);
         trivial_ast!(rule, stmt_MKRECTYPE, MKRECTYPE);

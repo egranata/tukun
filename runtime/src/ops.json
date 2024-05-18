@@ -159,5 +159,19 @@
         "builder_operands": [],
         "operand_writers": [],
         "is_terminal": false
+    },
+    {
+        "name": "RECGET",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    },
+    {
+        "name": "RECSET",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
     }
 ]

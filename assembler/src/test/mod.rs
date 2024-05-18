@@ -549,6 +549,62 @@ fn main
 }
 
 #[test]
+fn test_recget() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+%typedef "rec" = record("integer", "logical", "string")
+%const "three" = 3
+%const "four" = 4
+%const "hello" = "hi"
+%const "one" = 1
+fn main
+  :entry
+    push "three"
+    dup
+    push "four"
+    equal
+    push "hello"
+    push "com.tukunc.testmodule.rec"
+    tlookup
+    newrec
+    push "one"
+    recget
+    ret
+"#;
+    run_source(input, &[rv_bool!(false)]);
+}
+
+#[test]
+fn test_recset() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+%typedef "rec" = record("integer", "logical", "string")
+%const "three" = 3
+%const "four" = 4
+%const "hello" = "hi"
+%const "one" = 1
+fn main
+  :entry
+    push "three"
+    dup
+    push "four"
+    equal
+    push "hello"
+    push "com.tukunc.testmodule.rec"
+    tlookup
+    newrec
+    push "one"
+    push "three"
+    dup
+    equal
+    recset
+    ret
+"#;
+    let rv = Record::new_inferred(&[rv_int!(3), rv_bool!(true), rv_str!("hi")]);
+    run_source(input, &[RuntimeValue::Record(rv)]);
+}
+
+#[test]
 fn test_decl_arrtype() {
     let input = r#"
 @modname "com.tukunc.testmodule"

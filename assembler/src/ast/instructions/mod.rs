@@ -25,6 +25,8 @@ pub enum Instruction {
     ARRGET,
     ARRSET,
     ARRLEN,
+    RECGET,
+    RECSET,
     TYPEOF,
     MKARRTYPE,
     MKRECTYPE,
