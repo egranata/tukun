@@ -3,10 +3,6 @@ name = "runner"
 version = "0.1.0"
 edition = "2021"
 
-[[bin]]
-name = "tr"
-path = "src/main.rs"
-
 [dependencies]
 serde = { version = "1.0.197", features = ["derive"] }
 runtime = { path = "../runtime" }

@@ -1,46 +1,10 @@
 use clap::Parser;
 use corelib::register_corelib;
+use runner::{FileModuleSource, ModuleSource};
 use runtime::{
     environ::Environment, module_definition::ModuleDef, runloop::run_loop,
     runtime_module::RuntimeModule,
 };
-
-trait ModuleSource {
-    fn description(&self) -> String;
-    fn read(&self) -> std::io::Result<ModuleDef>;
-}
-
-struct FileModuleSource {
-    path: String,
-}
-
-impl FileModuleSource {
-    fn new(path: &str) -> Self {
-        Self {
-            path: path.to_owned(),
-        }
-    }
-}
-
-impl ModuleSource for FileModuleSource {
-    fn description(&self) -> String {
-        format!("file: {}", self.path)
-    }
-
-    fn read(&self) -> std::io::Result<ModuleDef> {
-        let bytes = std::fs::read(&self.path);
-        match bytes {
-            Ok(bytes) => {
-                let mdef: Result<ModuleDef, Box<bincode::ErrorKind>> = bincode::deserialize(&bytes);
-                match mdef {
-                    Ok(mdef) => Ok(mdef),
-                    Err(err) => Err(std::io::Error::new(std::io::ErrorKind::InvalidData, err)),
-                }
-            }
-            Err(err) => Err(err),
-        }
-    }
-}
 
 #[derive(clap::Parser, Debug)]
 #[command(version, about, long_about = None)]
