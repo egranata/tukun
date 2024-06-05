@@ -5,6 +5,7 @@
 pub enum Opcode {
     NOP,
     DUP,
+    SWAP,
     POP,
     PUSH,
     FLOOKUP,

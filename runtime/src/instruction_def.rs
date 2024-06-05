@@ -4,6 +4,7 @@
 pub enum InstructionDef {
     NOP,
     DUP,
+    SWAP,
     POP,
     PUSH(u16),
     FLOOKUP,
@@ -35,6 +36,7 @@ impl InstructionDef {
         match self {
             InstructionDef::NOP => 1,
             InstructionDef::DUP => 1,
+            InstructionDef::SWAP => 1,
             InstructionDef::POP => 1,
             InstructionDef::PUSH(_) => 1 + core::mem::size_of::<u16>(),
             InstructionDef::FLOOKUP => 1,
@@ -68,6 +70,7 @@ impl InstructionDef {
         match self {
             InstructionDef::NOP => false,
             InstructionDef::DUP => false,
+            InstructionDef::SWAP => false,
             InstructionDef::POP => false,
             InstructionDef::PUSH(_) => false,
             InstructionDef::FLOOKUP => false,
@@ -104,6 +107,9 @@ impl InstructionDef {
             }
             InstructionDef::DUP => {
                 bc.write_u8(u8::from(crate::opcodes::Opcode::DUP));
+            }
+            InstructionDef::SWAP => {
+                bc.write_u8(u8::from(crate::opcodes::Opcode::SWAP));
             }
             InstructionDef::POP => {
                 bc.write_u8(u8::from(crate::opcodes::Opcode::POP));

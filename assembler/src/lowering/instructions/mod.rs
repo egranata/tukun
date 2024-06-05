@@ -31,6 +31,7 @@ pub(crate) fn lower_instruction(
     trivial_lowering!(input, EQUAL);
     trivial_lowering!(input, NOT);
     trivial_lowering!(input, DUP);
+    trivial_lowering!(input, SWAP);
     trivial_lowering!(input, POP);
     trivial_lowering!(input, ARRGET);
     trivial_lowering!(input, ARRSET);

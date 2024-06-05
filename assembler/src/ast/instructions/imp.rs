@@ -22,6 +22,7 @@ impl super::Instruction {
         trivial_ast!(rule, stmt_EQUAL, EQUAL);
         trivial_ast!(rule, stmt_NOT, NOT);
         trivial_ast!(rule, stmt_DUP, DUP);
+        trivial_ast!(rule, stmt_SWAP, SWAP);
         trivial_ast!(rule, stmt_POP, POP);
         trivial_ast!(rule, stmt_ARRGET, ARRGET);
         trivial_ast!(rule, stmt_ARRSET, ARRSET);

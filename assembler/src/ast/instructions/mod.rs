@@ -21,6 +21,7 @@ pub enum Instruction {
     EQUAL,
     NOT,
     DUP,
+    SWAP,
     POP,
     ARRGET,
     ARRSET,

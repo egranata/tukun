@@ -14,6 +14,13 @@
         "is_terminal": false
     },
     {
+        "name": "SWAP",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    },
+    {
         "name": "POP",
         "runtime_operands": [],
         "builder_operands": [],

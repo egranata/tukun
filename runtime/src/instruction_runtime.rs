@@ -4,6 +4,7 @@
 pub enum RuntimeInstruction {
     NOP,
     DUP,
+    SWAP,
     POP,
     PUSH(u16),
     FLOOKUP,
@@ -38,6 +39,7 @@ impl RuntimeInstruction {
         match b {
             crate::opcodes::Opcode::NOP => (RuntimeInstruction::NOP, idx),
             crate::opcodes::Opcode::DUP => (RuntimeInstruction::DUP, idx),
+            crate::opcodes::Opcode::SWAP => (RuntimeInstruction::SWAP, idx),
             crate::opcodes::Opcode::POP => (RuntimeInstruction::POP, idx),
             crate::opcodes::Opcode::PUSH => {
                 let arg0 = bc.read_u16(idx);

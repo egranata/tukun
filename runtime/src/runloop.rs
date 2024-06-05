@@ -74,6 +74,12 @@ fn bytecode_run_loop<'a>(ctx: &'a BytecodeContext<'a>, env: &mut Environment) {
                 env.runtime_stack.push(val.clone());
                 env.runtime_stack.push(val);
             }
+            RuntimeInstruction::SWAP => {
+                let x = stack_pop!(env, inst);
+                let y = stack_pop!(env, inst);
+                env.runtime_stack.push(x);
+                env.runtime_stack.push(y);
+            }
             RuntimeInstruction::PUSH(idx) => {
                 #[allow(clippy::expect_fun_call)]
                 let iv = RuntimeValue::from(

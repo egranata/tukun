@@ -259,6 +259,22 @@ fn main
 }
 
 #[test]
+fn test_swap() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+%const "three" = 3
+%const "six" = 6
+fn main
+  :entry
+    push "six"
+    push "three"
+    swap
+    ret
+"#;
+    run_source(input, &[rv_int!(6), rv_int!(3)]);
+}
+
+#[test]
 fn test_pop() {
     let input = r#"
 @modname "com.tukunc.testmodule"

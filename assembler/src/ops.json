@@ -77,6 +77,13 @@
         "trivial_lowering": true
     },
     {
+        "name": "SWAP",
+        "pest_args": "",
+        "ast_args": [],
+        "trivial_ast": true,
+        "trivial_lowering": true
+    },
+    {
         "name": "POP",
         "pest_args": "",
         "ast_args": [],
