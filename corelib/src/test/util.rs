@@ -26,7 +26,7 @@ fn test_arraycopy() {
     env.push_value(dst); // dst
     env.push_value(rv_int!(1)); // dst_idx
     env.push_value(rv_int!(3)); // len
-    ac.call(&mut env);
+    assert!(ac.call(&mut env).is_ok());
     assert!(!env.is_stack_empty());
     let dst = typed_pop!(env, RuntimeValue::Arr);
     assert_eq!(10, dst.len());

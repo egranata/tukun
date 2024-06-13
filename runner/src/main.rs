@@ -64,7 +64,7 @@ fn main() {
 
     match env.lookup_function(&main_f) {
         Some(f) => {
-            run_loop(&f, &mut env);
+            println!("main function result: {:?}", run_loop(&f, &mut env));
         }
         None => panic!("unable to find main function"),
     }

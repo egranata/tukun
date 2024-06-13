@@ -51,13 +51,25 @@ impl<'a> BytecodeContext<'a> {
     }
 }
 
-fn bytecode_run_loop<'a>(ctx: &'a BytecodeContext<'a>, env: &mut Environment) {
+#[derive(Debug)]
+pub enum RunloopError {
+    InvalidOpcode(usize),
+    MissingInternValue(u16),
+    InvalidOperands(RuntimeInstruction, Vec<RuntimeValue>),
+    MissingFunction(String),
+    MissingType(String),
+    InvalidSlot(usize),
+}
+
+pub type RunloopResult = Result<(), RunloopError>;
+
+fn bytecode_run_loop<'a>(ctx: &'a BytecodeContext<'a>, env: &mut Environment) -> RunloopResult {
     let mut slots: Vec<RuntimeValue> = vec![];
 
     let mut cur_ptr: usize = 0;
     loop {
         if cur_ptr >= ctx.body().len() {
-            panic!("invalid opcode index {cur_ptr}");
+            return Err(RunloopError::InvalidOpcode(cur_ptr));
         }
         let (inst, i) = RuntimeInstruction::from_bytecode(ctx.body(), cur_ptr);
         cur_ptr = i;
@@ -81,14 +93,12 @@ fn bytecode_run_loop<'a>(ctx: &'a BytecodeContext<'a>, env: &mut Environment) {
                 env.runtime_stack.push(y);
             }
             RuntimeInstruction::PUSH(idx) => {
-                #[allow(clippy::expect_fun_call)]
-                let iv = RuntimeValue::from(
-                    ctx.module()
-                        .get_intern_value(idx)
-                        .expect(&format!("invalid intern value {idx}"))
-                        .as_ref(),
-                );
-                env.runtime_stack.push(iv);
+                let iv = ctx.module().get_intern_value(idx);
+                if iv.is_none() {
+                    return Err(RunloopError::MissingInternValue(idx));
+                }
+                let iv = iv.unwrap();
+                env.runtime_stack.push(RuntimeValue::from(iv.as_ref()));
             }
             RuntimeInstruction::ADD => {
                 let x = stack_pop!(env, inst);
@@ -98,7 +108,7 @@ fn bytecode_run_loop<'a>(ctx: &'a BytecodeContext<'a>, env: &mut Environment) {
                         env.runtime_stack.push(RuntimeValue::Integer(x + y))
                     }
                     (_, _) => {
-                        panic!("invalid operands for {inst:?}: {},{}", x, y)
+                        return Err(RunloopError::InvalidOperands(inst, vec![x, y]));
                     }
                 }
             }
@@ -120,7 +130,7 @@ fn bytecode_run_loop<'a>(ctx: &'a BytecodeContext<'a>, env: &mut Environment) {
                 let b = typed_pop!(env, inst, RuntimeValue::Logical);
                 env.runtime_stack.push(crate::rv_bool!(!b));
             }
-            RuntimeInstruction::RET => return,
+            RuntimeInstruction::RET => return Ok(()),
             RuntimeInstruction::FLOOKUP => {
                 let n = typed_pop!(env, inst, RuntimeValue::String);
                 if let Some(f) = env.lookup_function(&n) {
@@ -163,7 +173,8 @@ fn bytecode_run_loop<'a>(ctx: &'a BytecodeContext<'a>, env: &mut Environment) {
             }
             RuntimeInstruction::CALL => {
                 let f = typed_pop!(env, inst, RuntimeValue::Function);
-                run_loop(&f, env);
+                let result = run_loop(&f, env);
+                result?;
             }
             RuntimeInstruction::NEWARR => {
                 let at = typed_pop!(env, inst, RuntimeValue::Type);
@@ -254,18 +265,26 @@ fn bytecode_run_loop<'a>(ctx: &'a BytecodeContext<'a>, env: &mut Environment) {
     }
 }
 
-pub fn run_loop(callable: &RuntimeCallable, env: &mut Environment) {
-    match &callable.f.content {
+pub fn run_loop(callable: &RuntimeCallable, env: &mut Environment) -> RunloopResult {
+    env.unwinder.push_frame(callable);
+
+    let result = match &callable.f.content {
         either::Either::Left(f) => {
             let ctx = BytecodeContext {
                 m: &callable.module(),
                 b: f.body(),
             };
 
-            bytecode_run_loop(&ctx, env);
+            bytecode_run_loop(&ctx, env)
         }
-        either::Either::Right(f) => {
-            f.call(env);
+        either::Either::Right(f) => f.call(env),
+    };
+
+    match result {
+        Ok(_) => {
+            env.unwinder.pop_frame();
+            result
         }
+        Err(err) => Err(err),
     }
 }

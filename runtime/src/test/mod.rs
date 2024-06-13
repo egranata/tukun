@@ -5,12 +5,11 @@ use crate::{
     iv_str,
     module_definition::{FunctionDef, ModuleDef},
     opcodes::Opcode,
-    runloop::run_loop,
+    runloop::{run_loop, RunloopError},
     runtime_module::{NativeCallable, RuntimeModule},
     rv_int,
     types::{array::ArrayType, record::RecordType, RuntimeType},
-    values::array::Array,
-    values::RuntimeValue,
+    values::{array::Array, RuntimeValue},
 };
 
 use crate::instruction_def::InstructionDef;
@@ -117,7 +116,7 @@ fn test_runloop() {
     module.add_intern_value(&InternValue::Integer(6));
     env.add_module(module);
 
-    crate::runloop::run_loop(&function, &mut env);
+    assert!(crate::runloop::run_loop(&function, &mut env).is_ok());
 
     assert!(!env.is_stack_empty());
     assert_eq!(RuntimeValue::Integer(11), env.pop_value());
@@ -241,7 +240,7 @@ fn test_fcall() {
     let main = env
         .lookup_function("module.main")
         .expect("main function missing");
-    run_loop(&main, &mut env);
+    assert!(run_loop(&main, &mut env).is_ok());
 
     assert!(!env.is_stack_empty());
     assert_eq!(RuntimeValue::Integer(12), env.pop_value());
@@ -269,7 +268,7 @@ fn test_builder() {
     let main = env
         .lookup_function("module.main")
         .expect("main function missing");
-    run_loop(&main, &mut env);
+    assert!(run_loop(&main, &mut env).is_ok());
 
     assert!(!env.is_stack_empty());
     assert_eq!(RuntimeValue::Integer(12), env.pop_value());
@@ -328,7 +327,7 @@ fn test_builder_jump() {
     let main = env
         .lookup_function("module.main")
         .expect("main function missing");
-    run_loop(&main, &mut env);
+    assert!(run_loop(&main, &mut env).is_ok());
 
     assert!(!env.is_stack_empty());
     assert_eq!(RuntimeValue::Integer(15), env.pop_value());
@@ -373,7 +372,7 @@ fn test_builder_jtrue() {
     let main = env
         .lookup_function("module.main")
         .expect("main function missing");
-    run_loop(&main, &mut env);
+    assert!(run_loop(&main, &mut env).is_ok());
 
     assert!(!env.is_stack_empty());
     assert_eq!(RuntimeValue::Integer(8), env.pop_value());
@@ -434,7 +433,7 @@ fn test_typeof() {
     let main = env
         .lookup_function("module.main")
         .expect("main function missing");
-    run_loop(&main, &mut env);
+    assert!(run_loop(&main, &mut env).is_ok());
 
     assert!(!env.is_stack_empty());
     assert_eq!(RuntimeValue::Type(RuntimeType::Integer), env.pop_value());
@@ -479,7 +478,7 @@ fn test_runloop_slots() {
     let main = env
         .lookup_function("module.main")
         .expect("main function missing");
-    run_loop(&main, &mut env);
+    assert!(run_loop(&main, &mut env).is_ok());
 
     assert!(!env.is_stack_empty());
     assert_eq!(RuntimeValue::Integer(14), env.pop_value());
@@ -586,7 +585,7 @@ fn test_newarr_instruction() {
     let main = env
         .lookup_function("module.main")
         .expect("main function missing");
-    run_loop(&main, &mut env);
+    assert!(run_loop(&main, &mut env).is_ok());
 
     assert!(!env.is_stack_empty());
     if let RuntimeValue::Arr(arr) = env.pop_value() {
@@ -605,8 +604,9 @@ fn test_newarr_instruction() {
 fn test_native_function() {
     struct NativeReturn42 {}
     impl NativeCallable for NativeReturn42 {
-        fn call(&self, env: &mut Environment) {
+        fn call(&self, env: &mut Environment) -> Result<(), RunloopError> {
             env.push_value(rv_int!(42));
+            Ok(())
         }
 
         fn name(&self) -> String {
@@ -640,7 +640,7 @@ fn test_native_function() {
     let main = env
         .lookup_function("module.main")
         .expect("main function missing");
-    run_loop(&main, &mut env);
+    assert!(run_loop(&main, &mut env).is_ok());
 
     assert!(!env.is_stack_empty());
     assert_eq!(rv_int!(42), env.pop_value());

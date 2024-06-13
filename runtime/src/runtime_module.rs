@@ -6,11 +6,12 @@ use crate::{
     environ::Environment,
     intern_value::InternValue,
     module_definition::{FunctionDef, ModuleDef},
+    runloop::RunloopResult,
     types::typedef::TypeDef,
 };
 
 pub trait NativeCallable {
-    fn call(&self, env: &mut Environment);
+    fn call(&self, env: &mut Environment) -> RunloopResult;
     fn name(&self) -> String;
 }
 

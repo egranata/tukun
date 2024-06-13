@@ -3,6 +3,7 @@ use std::collections::HashMap;
 use crate::{
     runtime_module::{RuntimeCallable, RuntimeModule, RuntimeTypeDef},
     stack::Stack,
+    unwinder::Unwinder,
     values::RuntimeValue,
 };
 
@@ -10,6 +11,7 @@ use crate::{
 pub struct Environment {
     pub(crate) runtime_stack: Stack<RuntimeValue>,
     pub(crate) modules: HashMap<String, RuntimeModule>,
+    pub(crate) unwinder: Unwinder,
 }
 
 impl Environment {
@@ -62,5 +64,9 @@ impl Environment {
         } else {
             None
         }
+    }
+
+    pub fn print_unwind(&self) -> String {
+        format!("{}", self.unwinder)
     }
 }

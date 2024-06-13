@@ -1,19 +1,21 @@
 use std::time::SystemTime;
 
 use runtime::{
+    runloop::RunloopResult,
     runtime_module::{NativeCallable, RuntimeModule},
     rv_int,
 };
 
 struct NowCallable {}
 impl NativeCallable for NowCallable {
-    fn call(&self, env: &mut runtime::environ::Environment) {
+    fn call(&self, env: &mut runtime::environ::Environment) -> RunloopResult {
         let now = SystemTime::now();
         let duration = now
             .duration_since(SystemTime::UNIX_EPOCH)
             .expect("not time travel")
             .as_millis() as u64;
         env.push_value(rv_int!(duration));
+        Ok(())
     }
 
     fn name(&self) -> String {

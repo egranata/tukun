@@ -11,6 +11,7 @@ pub mod runloop;
 pub mod runtime_module;
 pub mod stack;
 pub mod types;
+pub mod unwinder;
 pub mod values;
 
 #[cfg(test)]

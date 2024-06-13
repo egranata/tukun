@@ -21,7 +21,7 @@ fn run_source<'a: 'static>(input: &'a str, stack: &[RuntimeValue]) -> Environmen
     env.add_module(rm);
 
     let main = env.lookup_function("com.tukunc.testmodule.main");
-    runloop::run_loop(&main.expect("missing main function"), &mut env);
+    assert!(runloop::run_loop(&main.expect("missing main function"), &mut env).is_ok());
 
     let mut i = 0;
 
