@@ -79,7 +79,7 @@ pub enum RunloopErrData {
     InvalidType(InvalidTypeError),
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 #[allow(dead_code)]
 pub struct RunloopError {
     pub cur_ptr: usize,

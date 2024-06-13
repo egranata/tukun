@@ -1,7 +1,8 @@
 use runtime::{
     environ::Environment,
+    instruction_runtime::RuntimeInstruction,
     module_definition::ModuleDef,
-    runloop,
+    runloop::{self, RunloopError, RunloopResult},
     runtime_module::RuntimeModule,
     rv_arr, rv_bool, rv_int, rv_str,
     types::{array::ArrayType, record::RecordType, RuntimeType},
@@ -11,7 +12,7 @@ use runtime::{
 use crate::assembler::do_assemble;
 
 #[allow(dead_code)]
-fn run_source<'a: 'static>(input: &'a str, stack: &[RuntimeValue]) -> Environment {
+fn run_source_impl<'a: 'static>(input: &'a str) -> (Environment, RunloopResult) {
     let mut env = Environment::default();
     corelib::register_corelib(&mut env);
 
@@ -21,7 +22,15 @@ fn run_source<'a: 'static>(input: &'a str, stack: &[RuntimeValue]) -> Environmen
     env.add_module(rm);
 
     let main = env.lookup_function("com.tukunc.testmodule.main");
-    assert!(runloop::run_loop(&main.expect("missing main function"), &mut env).is_ok());
+    let result = runloop::run_loop(&main.expect("missing main function"), &mut env);
+
+    (env, result)
+}
+
+#[allow(dead_code)]
+fn run_and_check_stack<'a: 'static>(input: &'a str, stack: &[RuntimeValue]) -> Environment {
+    let (mut env, result) = run_source_impl(input);
+    assert!(result.is_ok());
 
     let mut i = 0;
 
@@ -37,6 +46,25 @@ fn run_source<'a: 'static>(input: &'a str, stack: &[RuntimeValue]) -> Environmen
     env
 }
 
+#[allow(dead_code)]
+fn run_and_check_error<'a: 'static>(
+    input: &'a str,
+    err: RunloopError,
+    bt: Option<&str>,
+) -> Environment {
+    let (env, result) = run_source_impl(input);
+    assert!(result.is_err());
+
+    let result = result.unwrap_err();
+    assert_eq!(result, err);
+
+    if let Some(bt) = bt {
+        assert_eq!(bt, env.print_unwind());
+    }
+
+    env
+}
+
 #[test]
 fn test_define_module() {
     let input = r#"
@@ -45,7 +73,7 @@ fn main
   :entry
     ret
 "#;
-    run_source(input, &[]);
+    run_and_check_stack(input, &[]);
 }
 
 #[test]
@@ -65,7 +93,7 @@ fn main
     call
     ret
 "#;
-    run_source(input, &[RuntimeValue::Integer(5)]);
+    run_and_check_stack(input, &[RuntimeValue::Integer(5)]);
 }
 
 #[test]
@@ -83,7 +111,7 @@ fn main
     fcall "com.tukunc.testmodule.callee"
     ret
 "#;
-    run_source(input, &[RuntimeValue::Integer(5)]);
+    run_and_check_stack(input, &[RuntimeValue::Integer(5)]);
 }
 
 #[test]
@@ -103,7 +131,7 @@ fn main
     call
     ret
 "#;
-    run_source(input, &[RuntimeValue::Integer(5)]);
+    run_and_check_stack(input, &[RuntimeValue::Integer(5)]);
 }
 
 #[test]
@@ -119,7 +147,7 @@ fn main
     push 0
     ret
 "#;
-    run_source(input, &[RuntimeValue::Integer(6)]);
+    run_and_check_stack(input, &[RuntimeValue::Integer(6)]);
 }
 
 #[test]
@@ -132,7 +160,7 @@ fn main
     push "forty_two"
     ret
 "#;
-    run_source(input, &[RuntimeValue::Integer(42)]);
+    run_and_check_stack(input, &[RuntimeValue::Integer(42)]);
 }
 
 #[test]
@@ -148,7 +176,7 @@ fn main
     mkarrtype
     ret
 "#;
-    run_source(
+    run_and_check_stack(
         input,
         &[RuntimeValue::Type(runtime::types::RuntimeType::Arr(
             Box::new(ArrayType::new(runtime::types::RuntimeType::Integer, 3)),
@@ -178,7 +206,7 @@ fn main
     newarr
     ret
 "#;
-    run_source(
+    run_and_check_stack(
         input,
         &[rv_arr!(rv_int!(1), rv_int!(2), rv_int!(3), rv_int!(4))],
     );
@@ -194,7 +222,7 @@ fn main
     fcall "corelib.now"
     ret
 "#;
-    let mut env = run_source(input, &[]);
+    let mut env = run_and_check_stack(input, &[]);
     assert!(!env.is_stack_empty());
     let value = env.pop_value();
     assert!(matches!(value, RuntimeValue::Integer(x) if x > 0));
@@ -214,7 +242,7 @@ fn main
     fcall "com.tukunc.testmodule.callee"
     ret
 "#;
-    run_source(input, &[RuntimeValue::Integer(5)]);
+    run_and_check_stack(input, &[RuntimeValue::Integer(5)]);
 }
 
 #[test]
@@ -240,7 +268,7 @@ fn main
     push "seven"
     ret
 "#;
-    run_source(input, &[RuntimeValue::Integer(7)]);
+    run_and_check_stack(input, &[RuntimeValue::Integer(7)]);
 }
 
 #[test]
@@ -255,7 +283,7 @@ fn main
     add
     ret
 "#;
-    run_source(input, &[RuntimeValue::Integer(12)]);
+    run_and_check_stack(input, &[RuntimeValue::Integer(12)]);
 }
 
 #[test]
@@ -271,7 +299,7 @@ fn main
     swap
     ret
 "#;
-    run_source(input, &[rv_int!(6), rv_int!(3)]);
+    run_and_check_stack(input, &[rv_int!(6), rv_int!(3)]);
 }
 
 #[test]
@@ -289,7 +317,7 @@ fn main
     add
     ret
 "#;
-    run_source(input, &[RuntimeValue::Integer(13)]);
+    run_and_check_stack(input, &[RuntimeValue::Integer(13)]);
 }
 
 #[test]
@@ -313,7 +341,7 @@ fn main
     add
     ret
 "#;
-    run_source(input, &[RuntimeValue::Integer(12)]);
+    run_and_check_stack(input, &[RuntimeValue::Integer(12)]);
 }
 
 #[test]
@@ -341,7 +369,7 @@ fn main
     arrget
     ret
 "#;
-    run_source(input, &[rv_int!(2)]);
+    run_and_check_stack(input, &[rv_int!(2)]);
 }
 
 #[test]
@@ -376,7 +404,7 @@ fn main
     arrget
     ret
 "#;
-    run_source(
+    run_and_check_stack(
         input,
         &[
             rv_int!(5),
@@ -416,7 +444,7 @@ fn main
     arrlen
     ret
 "#;
-    run_source(input, &[rv_int!(4)]);
+    run_and_check_stack(input, &[rv_int!(4)]);
 }
 
 #[test]
@@ -437,7 +465,7 @@ fn main
     typeof
     ret
 "#;
-    run_source(
+    run_and_check_stack(
         input,
         &[
             RuntimeValue::Type(runtime::types::RuntimeType::Logical),
@@ -472,7 +500,7 @@ fn main
     arrlen
     ret
 "#;
-    run_source(input, &[rv_int!(4)]);
+    run_and_check_stack(input, &[rv_int!(4)]);
 }
 
 #[test]
@@ -495,7 +523,7 @@ fn main
     mkrectype
     ret
 "#;
-    run_source(
+    run_and_check_stack(
         input,
         &[RuntimeValue::Type(RuntimeType::Record(Box::new(
             RecordType::new(&[
@@ -537,7 +565,7 @@ fn main
     ret
 "#;
     let rv = Record::new_inferred(&[rv_int!(4), rv_bool!(true), rv_str!("hi")]);
-    run_source(input, &[RuntimeValue::Record(rv)]);
+    run_and_check_stack(input, &[RuntimeValue::Record(rv)]);
 }
 
 #[test]
@@ -561,7 +589,7 @@ fn main
     ret
 "#;
     let rv = Record::new_inferred(&[rv_int!(3), rv_bool!(false), rv_str!("hi")]);
-    run_source(input, &[RuntimeValue::Record(rv)]);
+    run_and_check_stack(input, &[RuntimeValue::Record(rv)]);
 }
 
 #[test]
@@ -587,7 +615,7 @@ fn main
     recget
     ret
 "#;
-    run_source(input, &[rv_bool!(false)]);
+    run_and_check_stack(input, &[rv_bool!(false)]);
 }
 
 #[test]
@@ -617,7 +645,7 @@ fn main
     ret
 "#;
     let rv = Record::new_inferred(&[rv_int!(3), rv_bool!(true), rv_str!("hi")]);
-    run_source(input, &[RuntimeValue::Record(rv)]);
+    run_and_check_stack(input, &[RuntimeValue::Record(rv)]);
 }
 
 #[test]
@@ -631,7 +659,7 @@ fn main
     tlookup
     ret
 "#;
-    run_source(
+    run_and_check_stack(
         input,
         &[RuntimeValue::Type(runtime::types::RuntimeType::Arr(
             Box::new(ArrayType::new(runtime::types::RuntimeType::Integer, 3)),
@@ -655,7 +683,7 @@ fn main # a function
     ret
     # an empty comment here
 "#;
-    run_source(input, &[rv_int!(6)]);
+    run_and_check_stack(input, &[rv_int!(6)]);
 }
 
 #[test]
@@ -674,7 +702,7 @@ fn main
     equal not
     ret
 "#;
-    run_source(input, &[rv_bool!(true), rv_bool!(false)]);
+    run_and_check_stack(input, &[rv_bool!(true), rv_bool!(false)]);
 }
 
 #[test]
@@ -688,5 +716,37 @@ fn main
   :entry
     ret
 "#;
-    run_source(input, &[]);
+    run_and_check_stack(input, &[]);
+}
+
+#[test]
+fn test_err_mismatch_add() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+%const "five" = 5
+%const "four" = "four"
+fn doaddition
+  :entry
+    dup
+    nop
+    pop
+    add
+    ret
+fn main
+  :entry
+    push "five"
+    push "four"
+    fcall "com.tukunc.testmodule.doaddition"
+"#;
+    run_and_check_error(
+        input,
+        RunloopError {
+            cur_ptr: 3,
+            data: runloop::RunloopErrData::InvalidOperands(
+                RuntimeInstruction::ADD,
+                vec![rv_str!("four"), rv_int!(5)],
+            ),
+        },
+        Some("com.tukunc.testmodule.doaddition\ncom.tukunc.testmodule.main"),
+    );
 }
