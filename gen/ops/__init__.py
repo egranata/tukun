@@ -63,11 +63,15 @@ def load_opcodes_from_path(path):
     return opcodes
 
 class EnumVisitor(OpcodeVisitor):
-    def __init__(self,n,src,dst):
+    def __init__(self,n,src,dst,eq=False):
         super().__init__(src,dst)
         self.n = n
+        self.eq = eq
     def prefix(self):
-        yield "#[derive(Debug, Clone)]"
+        if self.eq:
+            yield "#[derive(Debug, Clone, PartialEq, Eq)]"
+        else:
+            yield "#[derive(Debug, Clone)]"
         yield f'pub enum {self.n} {{'
     def suffix(self):
         yield "}"

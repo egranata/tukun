@@ -5,7 +5,7 @@ use crate::{
     iv_str,
     module_definition::{FunctionDef, ModuleDef},
     opcodes::Opcode,
-    runloop::{run_loop, RunloopError},
+    runloop::{run_loop, RunloopErrData, RunloopResult},
     runtime_module::{NativeCallable, RuntimeModule},
     rv_int,
     types::{array::ArrayType, record::RecordType, RuntimeType},
@@ -604,7 +604,7 @@ fn test_newarr_instruction() {
 fn test_native_function() {
     struct NativeReturn42 {}
     impl NativeCallable for NativeReturn42 {
-        fn call(&self, env: &mut Environment) -> Result<(), RunloopError> {
+        fn call(&self, env: &mut Environment) -> RunloopResult {
             env.push_value(rv_int!(42));
             Ok(())
         }
@@ -717,4 +717,32 @@ fn test_record_lookup() {
 
     assert!(env.lookup_function("com.module1.test").is_none());
     assert!(env.lookup_function("com.module2.again").is_none());
+}
+
+#[test]
+fn test_runllop_err() {
+    let mut builder = Builder::new("main");
+    let mut block = builder.append_block("entry");
+    block.append_instruction(InstructionDef::NOP);
+    block.append_instruction(InstructionDef::PUSH(4));
+
+    let main = builder.generate();
+    let mut md = ModuleDef::new("module");
+    md.add_interned_value(crate::intern_value::InternValue::Integer(5));
+    md.add_interned_value(crate::intern_value::InternValue::Integer(7));
+    md.add_function(main);
+
+    let rd = RuntimeModule::from(&md);
+    let mut env = Environment::default();
+    env.add_module(rd);
+
+    let main = env
+        .lookup_function("module.main")
+        .expect("main function missing");
+    let rl = run_loop(&main, &mut env);
+    assert!(rl.is_err());
+    let rl = rl.unwrap_err();
+    assert_eq!(rl.data, RunloopErrData::MissingInternValue(4));
+    assert_eq!(env.print_unwind(), "module.main");
+    assert_eq!(rl.cur_ptr, 1);
 }

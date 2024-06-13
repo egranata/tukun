@@ -3,7 +3,7 @@ from gen.runtime.util import RuntimeSizeMethodVisitor
 
 class RuntimeInstructionEnumVisitor(EnumVisitor):
     def __init__(self, src,dst):
-        super().__init__("RuntimeInstruction",src,dst)
+        super().__init__("RuntimeInstruction",src,dst,eq=True)
     def opcode(self, opcode):
             operands = opcode.runtime_operands
             if len(operands) == 0:
