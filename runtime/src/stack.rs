@@ -8,6 +8,17 @@ impl<T> Default for Stack<T> {
     }
 }
 
+impl<T> Clone for Stack<T>
+where
+    T: Clone,
+{
+    fn clone(&self) -> Self {
+        Self {
+            values: self.values.clone(),
+        }
+    }
+}
+
 impl<T> Stack<T> {
     pub fn push(&mut self, val: T) {
         self.values.push(val)
@@ -33,8 +44,16 @@ impl<T> Stack<T> {
         self.values.last()
     }
 
+    pub fn try_peek_mut(&mut self) -> Option<&mut T> {
+        self.values.last_mut()
+    }
+
     pub fn peek(&self) -> &T {
         self.try_peek().expect("peek of empty stack")
+    }
+
+    pub fn peek_mut(&mut self) -> &mut T {
+        self.try_peek_mut().expect("peek of empty stack")
     }
 
     pub fn try_peek_at(&self, n: usize) -> Option<&T> {

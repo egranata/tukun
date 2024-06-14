@@ -747,6 +747,6 @@ fn main
                 vec![rv_str!("four"), rv_int!(5)],
             ),
         },
-        Some("com.tukunc.testmodule.doaddition\ncom.tukunc.testmodule.main"),
+        Some("com.tukunc.testmodule.doaddition:3\ncom.tukunc.testmodule.main:10"),
     );
 }

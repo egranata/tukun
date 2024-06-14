@@ -79,12 +79,20 @@ pub enum RunloopErrData {
     InvalidType(InvalidTypeError),
 }
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug)]
 #[allow(dead_code)]
 pub struct RunloopError {
     pub cur_ptr: usize,
     pub data: RunloopErrData,
 }
+
+impl PartialEq for RunloopError {
+    fn eq(&self, other: &Self) -> bool {
+        self.cur_ptr == other.cur_ptr && self.data == other.data
+    }
+}
+
+impl Eq for RunloopError {}
 
 pub type RunloopResult = Result<(), RunloopError>;
 
@@ -94,6 +102,8 @@ fn bytecode_run_loop<'a>(ctx: &'a BytecodeContext<'a>, env: &mut Environment) ->
     let mut ip: usize = 0;
     loop {
         let cur_ptr = ip;
+        env.unwinder.set_ip(cur_ptr);
+
         if cur_ptr >= ctx.body().len() {
             err_ret!(cur_ptr, RunloopErrData::InstrutionOutOfBounds);
         }

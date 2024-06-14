@@ -720,7 +720,7 @@ fn test_record_lookup() {
 }
 
 #[test]
-fn test_runllop_err() {
+fn test_runloop_err() {
     let mut builder = Builder::new("main");
     let mut block = builder.append_block("entry");
     block.append_instruction(InstructionDef::NOP);
@@ -743,6 +743,6 @@ fn test_runllop_err() {
     assert!(rl.is_err());
     let rl = rl.unwrap_err();
     assert_eq!(rl.data, RunloopErrData::MissingInternValue(4));
-    assert_eq!(env.print_unwind(), "module.main");
+    assert_eq!(env.print_unwind(), "module.main:1");
     assert_eq!(rl.cur_ptr, 1);
 }

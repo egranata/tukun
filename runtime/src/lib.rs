@@ -1,6 +1,7 @@
 pub mod builder;
 pub mod bytecode;
 pub mod environ;
+pub mod frame;
 pub mod instruction_def;
 pub mod instruction_runtime;
 pub mod intern_value;

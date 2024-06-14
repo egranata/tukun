@@ -1,19 +1,23 @@
-use crate::{runtime_module::RuntimeCallable, stack::Stack};
+use crate::{frame::Frame, runtime_module::RuntimeCallable, stack::Stack};
 
 #[derive(Default)]
 pub struct Unwinder {
-    b: Stack<String>,
+    b: Stack<Frame>,
 }
 
 impl Unwinder {
-    fn do_push_frame(&mut self, s: &str) {
-        self.b.push(s.to_owned())
-    }
-    pub fn push_frame(&mut self, frame: &RuntimeCallable) {
-        self.do_push_frame(&frame.fullname())
+    pub fn push_frame(&mut self, f: &RuntimeCallable) -> &Frame {
+        let frm = Frame::new(f);
+        self.b.push(frm);
+        self.b.peek()
     }
 
-    pub fn pop_frame(&mut self) -> String {
+    pub fn set_ip(&mut self, ip: usize) -> &Frame {
+        self.b.peek_mut().set_ip(ip);
+        self.b.peek()
+    }
+
+    pub fn pop_frame(&mut self) -> Frame {
         self.b.pop()
     }
 
@@ -23,6 +27,10 @@ impl Unwinder {
 
     pub fn len(&self) -> usize {
         self.b.len()
+    }
+
+    pub fn unwind(&self) -> Stack<Frame> {
+        self.b.clone()
     }
 }
 
@@ -35,9 +43,9 @@ impl std::fmt::Display for Unwinder {
             let frame = self.b.peek_at(i);
             if first {
                 first = false;
-                s = frame.to_owned();
+                s = format!("{}", frame);
             } else {
-                s = s + "\n" + frame;
+                s = format!("{}\n{}", s, frame);
             }
             i += 1;
         }
