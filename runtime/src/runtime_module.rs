@@ -3,6 +3,7 @@ use std::{cell::RefCell, collections::HashMap, rc::Rc};
 use either::Either;
 
 use crate::{
+    bytecode::Bytecode,
     environ::Environment,
     intern_value::InternValue,
     module_definition::{FunctionDef, ModuleDef},
@@ -22,12 +23,50 @@ impl std::fmt::Debug for dyn NativeCallable {
 }
 
 #[derive(Debug)]
-pub(crate) struct RuntimeFunctionImpl {
-    pub(crate) owner: RuntimeModule,
-    pub(crate) content: Either<FunctionDef, Box<dyn NativeCallable>>,
+pub(crate) struct RuntimeBytecodeFunctionImpl {
+    pub(crate) name: String,
+    pub(crate) body: Bytecode,
 }
 
-impl RuntimeFunctionImpl {
+impl From<FunctionDef> for RuntimeBytecodeFunctionImpl {
+    fn from(value: FunctionDef) -> Self {
+        Self {
+            name: value.name().clone(),
+            body: value.body().clone(),
+        }
+    }
+}
+
+#[derive(Debug, Clone)]
+pub struct RuntimeBytecodeFunction {
+    pub(crate) f: Rc<RuntimeBytecodeFunctionImpl>,
+}
+
+impl RuntimeBytecodeFunction {
+    pub(crate) fn name(&self) -> String {
+        self.f.name.clone()
+    }
+
+    pub(crate) fn body(&self) -> &Bytecode {
+        &self.f.body
+    }
+}
+
+impl From<FunctionDef> for RuntimeBytecodeFunction {
+    fn from(value: FunctionDef) -> Self {
+        Self {
+            f: Rc::new(From::from(value)),
+        }
+    }
+}
+
+#[derive(Debug)]
+pub(crate) struct RuntimeCallableImpl {
+    pub(crate) owner: RuntimeModule,
+    pub(crate) content: Either<RuntimeBytecodeFunction, Box<dyn NativeCallable>>,
+}
+
+impl RuntimeCallableImpl {
     fn name(&self) -> String {
         match &self.content {
             Either::Left(f) => f.name(),
@@ -38,7 +77,7 @@ impl RuntimeFunctionImpl {
 
 #[derive(Debug, Clone)]
 pub struct RuntimeCallable {
-    pub(crate) f: Rc<RuntimeFunctionImpl>,
+    pub(crate) f: Rc<RuntimeCallableImpl>,
 }
 
 impl PartialEq<RuntimeCallable> for RuntimeCallable {
@@ -52,16 +91,16 @@ impl Eq for RuntimeCallable {}
 impl RuntimeCallable {
     pub fn from_fdef(m: &RuntimeModule, f: FunctionDef) -> Self {
         Self {
-            f: Rc::new(RuntimeFunctionImpl {
+            f: Rc::new(RuntimeCallableImpl {
                 owner: m.clone(),
-                content: Either::Left(f),
+                content: Either::Left(From::from(f)),
             }),
         }
     }
 
     pub fn from_native(m: &RuntimeModule, f: Box<dyn NativeCallable>) -> Self {
         Self {
-            f: Rc::new(RuntimeFunctionImpl {
+            f: Rc::new(RuntimeCallableImpl {
                 owner: m.clone(),
                 content: Either::Right(f),
             }),
