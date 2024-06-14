@@ -750,3 +750,33 @@ fn main
         Some("com.tukunc.testmodule.doaddition:3\ncom.tukunc.testmodule.main:10"),
     );
 }
+
+#[test]
+fn test_err_unwind_not_failing() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+fn donothing
+  :entry
+    nop
+    nop
+    ret
+fn fail
+  :entry
+    pop
+    pop
+    pop
+    ret
+fn main
+  :entry
+    fcall "com.tukunc.testmodule.donothing"
+    fcall "com.tukunc.testmodule.fail"
+"#;
+    run_and_check_error(
+        input,
+        RunloopError {
+            cur_ptr: 0,
+            data: runloop::RunloopErrData::EmptyStack,
+        },
+        Some("com.tukunc.testmodule.fail:0\ncom.tukunc.testmodule.main:9"),
+    );
+}
