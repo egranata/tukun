@@ -8,6 +8,7 @@ pub mod typedef;
 pub enum RuntimeType {
     Integer,
     Logical,
+    Float,
     String,
     Function,
     Arr(Box<array::ArrayType>),
@@ -27,6 +28,7 @@ impl From<&RuntimeType> for String {
             RuntimeType::Integer => String::from("type::integer"),
             RuntimeType::Logical => String::from("type::logical"),
             RuntimeType::String => String::from("type::string"),
+            RuntimeType::Float => String::from("type::float"),
             RuntimeType::Function => String::from("type::function"),
             RuntimeType::Arr(at) => String::from(at.as_ref()),
             RuntimeType::Record(rt) => String::from(rt.as_ref()),

@@ -15,6 +15,9 @@ impl NativeCallable for PrintCallable {
             runtime::values::RuntimeValue::Logical(x) => {
                 println!("{}", x);
             }
+            runtime::values::RuntimeValue::Float(x) => {
+                println!("{}", x);
+            }
             runtime::values::RuntimeValue::String(s) => {
                 println!("{}", s);
             }

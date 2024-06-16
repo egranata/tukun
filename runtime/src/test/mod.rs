@@ -126,6 +126,40 @@ fn test_runloop() {
 }
 
 #[test]
+fn test_float_add() {
+    use crate::bytecode::Bytecode;
+    use crate::environ::Environment;
+    use crate::intern_value::InternValue;
+    use crate::opcodes::Opcode;
+
+    let mut bc = Bytecode::default();
+
+    let mut module = RuntimeModule::new("module");
+    let iv0 = module.add_intern_value(&InternValue::Float(1.25));
+    let iv1 = module.add_intern_value(&InternValue::Float(1.25));
+
+    bc.write_u8(u8::from(Opcode::PUSH));
+    bc.write_u16(iv0 as u16);
+    bc.write_u8(u8::from(Opcode::PUSH));
+    bc.write_u16(iv1 as u16);
+    bc.write_u8(u8::from(Opcode::ADD));
+    bc.write_u8(u8::from(Opcode::RET));
+    let function = FunctionDef::new("main", bc);
+    let function = module.add_function_fdef(&function);
+
+    let mut env = Environment::default();
+    env.add_module(module);
+
+    assert!(crate::runloop::run_loop(&function, &mut env).is_ok());
+
+    assert!(!env.is_stack_empty());
+    let fv = env.pop_value();
+    let fv = fv.as_float().expect("expected a float");
+    assert!((fv - 2.5).abs() < 0.01);
+    assert!(env.is_stack_empty());
+}
+
+#[test]
 fn test_function_lookup() {
     use crate::bytecode::Bytecode;
     use crate::environ::Environment;

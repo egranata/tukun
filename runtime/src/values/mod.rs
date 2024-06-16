@@ -10,6 +10,7 @@ pub mod record;
 pub enum RuntimeValue {
     Integer(u64),
     Logical(bool),
+    Float(f64),
     String(String),
     Function(RuntimeCallable),
     Arr(array::Array),
@@ -22,6 +23,7 @@ impl From<&InternValue> for RuntimeValue {
         match value {
             InternValue::Integer(x) => Self::Integer(*x),
             InternValue::String(s) => Self::String(s.clone()),
+            InternValue::Float(x) => Self::Float(*x),
         }
     }
 }
@@ -31,6 +33,7 @@ impl RuntimeValue {
         match self {
             RuntimeValue::Integer(_) => RuntimeType::Integer,
             RuntimeValue::Logical(_) => RuntimeType::Logical,
+            RuntimeValue::Float(_) => RuntimeType::Float,
             RuntimeValue::String(_) => RuntimeType::String,
             RuntimeValue::Function(_) => RuntimeType::Function,
             RuntimeValue::Arr(v) => v.get_type(),
@@ -48,6 +51,9 @@ impl std::fmt::Display for RuntimeValue {
             }
             RuntimeValue::Logical(b) => {
                 write!(f, "Logical({b})")
+            }
+            RuntimeValue::Float(g) => {
+                write!(f, "Float({g})")
             }
             RuntimeValue::String(s) => {
                 write!(f, "String({s:?})")

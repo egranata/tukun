@@ -250,10 +250,10 @@ impl RuntimeModule {
         self.m.borrow().named_types.get(name).cloned()
     }
 
-    pub fn add_intern_value(&mut self, iv: &InternValue) -> Rc<InternValue> {
+    pub fn add_intern_value(&mut self, iv: &InternValue) -> usize {
         let iv = Rc::new(iv.clone());
         self.m.borrow_mut().intern_values.push(iv.clone());
-        iv
+        self.m.borrow().intern_values.len() - 1
     }
 
     pub fn get_intern_value(&self, idx: u16) -> Option<Rc<InternValue>> {

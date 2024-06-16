@@ -14,6 +14,10 @@ impl PartialEq for RuntimeValue {
                     let x2 = v2.as_logical().expect("invalid value");
                     *x1 == *x2
                 }
+                RuntimeValue::Float(x1) => {
+                    let x2 = v2.as_float().expect("invalid value");
+                    *x1 == *x2
+                }
                 RuntimeValue::String(x1) => {
                     let x2 = v2.as_string().expect("invalid integer value");
                     *x1 == *x2

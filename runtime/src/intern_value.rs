@@ -18,5 +18,6 @@ macro_rules! iv_str {
 #[derive(Clone, Debug, Serialize, Deserialize, EnumAsInner)]
 pub enum InternValue {
     Integer(u64),
+    Float(f64),
     String(String),
 }

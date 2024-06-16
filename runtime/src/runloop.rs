@@ -148,6 +148,9 @@ fn bytecode_run_loop<'a>(ctx: &'a BytecodeContext<'a>, env: &mut Environment) ->
                     (RuntimeValue::Integer(x), RuntimeValue::Integer(y)) => {
                         env.runtime_stack.push(RuntimeValue::Integer(x + y))
                     }
+                    (RuntimeValue::Float(x), RuntimeValue::Float(y)) => {
+                        env.runtime_stack.push(RuntimeValue::Float(x + y))
+                    }
                     (_, _) => {
                         err_ret!(cur_ptr, RunloopErrData::InvalidOperands(inst, vec![x, y]));
                     }
