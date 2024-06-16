@@ -5,7 +5,7 @@ use crate::{
     values::RuntimeValue,
 };
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug)]
 struct ArrayImpl {
     at: ArrayType,
     values: Vec<RuntimeValue>,
@@ -38,14 +38,6 @@ impl std::fmt::Display for Array {
         write!(f, "]")
     }
 }
-
-impl PartialEq for Array {
-    fn eq(&self, other: &Self) -> bool {
-        self.a.borrow().eq(&other.a.borrow())
-    }
-}
-
-impl Eq for Array {}
 
 impl Array {
     pub fn new_typed(t: RuntimeType, v: &[RuntimeValue]) -> Self {

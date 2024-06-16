@@ -1,9 +1,12 @@
+use enum_as_inner::EnumAsInner;
+
 use crate::{intern_value::InternValue, runtime_module::RuntimeCallable, types::RuntimeType};
 
 pub mod array;
+pub mod comparators;
 pub mod record;
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, EnumAsInner)]
 pub enum RuntimeValue {
     Integer(u64),
     Logical(bool),

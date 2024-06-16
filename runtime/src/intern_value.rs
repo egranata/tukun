@@ -1,3 +1,4 @@
+use enum_as_inner::EnumAsInner;
 use serde::{Deserialize, Serialize};
 
 #[macro_export]
@@ -14,7 +15,7 @@ macro_rules! iv_str {
     };
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize, EnumAsInner)]
 pub enum InternValue {
     Integer(u64),
     String(String),

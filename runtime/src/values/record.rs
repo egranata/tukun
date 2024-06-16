@@ -5,7 +5,7 @@ use crate::{
     values::RuntimeValue,
 };
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug)]
 struct RecordImpl {
     value_type: RecordType,
     values: Vec<RuntimeValue>,
@@ -38,14 +38,6 @@ impl std::fmt::Display for Record {
         write!(f, "}}")
     }
 }
-
-impl PartialEq for Record {
-    fn eq(&self, other: &Self) -> bool {
-        self.a.borrow().eq(&other.a.borrow())
-    }
-}
-
-impl Eq for Record {}
 
 impl Record {
     pub fn new_typed(t: RecordType, v: &[RuntimeValue]) -> Self {
