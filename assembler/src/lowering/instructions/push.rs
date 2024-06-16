@@ -1,9 +1,10 @@
-use runtime::instruction_def::InstructionDef;
+use runtime::{instruction_def::InstructionDef, module_definition::ModuleDef};
 
 use crate::ast::{instructions::Instruction, module::Module};
 
 pub(crate) fn lower_instruction(
-    mdef: &Module,
+    ast: &Module,
+    _mdef: &mut ModuleDef,
     input: &Instruction,
     _b: &mut runtime::builder::Builder,
 ) -> Vec<InstructionDef> {
@@ -11,7 +12,7 @@ pub(crate) fn lower_instruction(
         vec![InstructionDef::PUSH(match x {
             either::Either::Left(idx) => *idx,
             either::Either::Right(name) => {
-                let idx = mdef.constant_idx_by_name(name);
+                let idx = ast.constant_idx_by_name(name);
                 idx as u16
             }
         })]

@@ -7,7 +7,7 @@ mod jump;
 mod push;
 mod toslot;
 use crate::ast::{instructions::Instruction, module::Module};
-use runtime::instruction_def::InstructionDef;
+use runtime::{instruction_def::InstructionDef, module_definition::ModuleDef};
 macro_rules! trivial_lowering {
     ($input:expr, $candidate:ident) => {
         if matches!($input, Instruction::$candidate) {
@@ -16,7 +16,8 @@ macro_rules! trivial_lowering {
     };
 }
 pub(crate) fn lower_instruction(
-    mdef: &Module,
+    ast: &Module,
+    mdef: &mut ModuleDef,
     input: &Instruction,
     b: &mut runtime::builder::Builder,
 ) -> Vec<InstructionDef> {
@@ -42,22 +43,22 @@ pub(crate) fn lower_instruction(
     trivial_lowering!(input, MKARRTYPE);
     trivial_lowering!(input, MKRECTYPE);
     if let Instruction::PUSH(_) = input {
-        return push::lower_instruction(mdef, input, b);
+        return push::lower_instruction(ast, mdef, input, b);
     }
     if let Instruction::JUMP(_) = input {
-        return jump::lower_instruction(mdef, input, b);
+        return jump::lower_instruction(ast, mdef, input, b);
     }
     if let Instruction::JTRUE(_) = input {
-        return jtrue::lower_instruction(mdef, input, b);
+        return jtrue::lower_instruction(ast, mdef, input, b);
     }
     if let Instruction::FCALL(_) = input {
-        return fcall::lower_instruction(mdef, input, b);
+        return fcall::lower_instruction(ast, mdef, input, b);
     }
     if let Instruction::FROMSLOT(_) = input {
-        return fromslot::lower_instruction(mdef, input, b);
+        return fromslot::lower_instruction(ast, mdef, input, b);
     }
     if let Instruction::TOSLOT(_) = input {
-        return toslot::lower_instruction(mdef, input, b);
+        return toslot::lower_instruction(ast, mdef, input, b);
     }
     panic!(
         "instruction {:?} should have been handled but is not",

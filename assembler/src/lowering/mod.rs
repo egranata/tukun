@@ -44,11 +44,16 @@ fn create_basic_block(input: &Block, b: &mut Builder) -> BasicBlock {
     b.append_block(&input.name)
 }
 
-fn lower_basic_block(mdef: &Module, input: &Block, b: &mut Builder) -> BasicBlock {
+fn lower_basic_block(
+    ast: &Module,
+    mdef: &mut ModuleDef,
+    input: &Block,
+    b: &mut Builder,
+) -> BasicBlock {
     let mut ret = b.find_block(&input.name).expect("invalid block");
 
     for i in &input.body {
-        let lis = lower_instruction(mdef, i, b);
+        let lis = lower_instruction(ast, mdef, i, b);
         for li in lis {
             ret.append_instruction(li);
         }
@@ -57,7 +62,7 @@ fn lower_basic_block(mdef: &Module, input: &Block, b: &mut Builder) -> BasicBloc
     ret
 }
 
-fn lower_function(mdef: &Module, input: &Function) -> FunctionDef {
+fn lower_function(ast: &Module, mdef: &mut ModuleDef, input: &Function) -> FunctionDef {
     let mut b = Builder::new(&input.name);
 
     for k in &input.body {
@@ -65,7 +70,7 @@ fn lower_function(mdef: &Module, input: &Function) -> FunctionDef {
     }
 
     for k in &input.body {
-        lower_basic_block(mdef, k, &mut b);
+        lower_basic_block(ast, mdef, k, &mut b);
     }
 
     b.generate()
@@ -111,7 +116,8 @@ pub fn lower_ast(mut input: Module) -> ModuleDef {
     }
 
     for f in &input.functions {
-        ret.add_function(lower_function(&input, f));
+        let new_f = lower_function(&input, &mut ret, f);
+        ret.add_function(new_f);
     }
 
     ret

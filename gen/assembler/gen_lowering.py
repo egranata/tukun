@@ -13,7 +13,7 @@ class GenInstructionLowering(OpcodeVisitor):
             yield f'    trivial_lowering!(input, {name});'
         else:
             yield f"    if let Instruction::{name}(_) = input {{"
-            yield f"        return {name.lower()}::lower_instruction(mdef, input, b);"
+            yield f"        return {name.lower()}::lower_instruction(ast, mdef, input, b);"
             yield "    }"
 
     def prefix(self):
@@ -23,7 +23,7 @@ class GenInstructionLowering(OpcodeVisitor):
         yield "mod jump;"
         yield "mod push;"
         yield "mod toslot;"
-        yield "use runtime::instruction_def::InstructionDef;"
+        yield "use runtime::{instruction_def::InstructionDef, module_definition::ModuleDef};"
         yield "use crate::ast::{instructions::Instruction, module::Module};"
         yield "macro_rules! trivial_lowering {"
         yield "    ($input:expr, $candidate:ident) => {"
@@ -33,7 +33,8 @@ class GenInstructionLowering(OpcodeVisitor):
         yield "    };"
         yield "}"
         yield "pub(crate) fn lower_instruction("
-        yield "    mdef: &Module,"
+        yield "    ast: &Module,"
+        yield "    mdef: &mut ModuleDef,"
         yield "    input: &Instruction,"
         yield "    b: &mut runtime::builder::Builder,"
         yield ") -> Vec<InstructionDef> {"
