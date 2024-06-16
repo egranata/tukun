@@ -15,7 +15,7 @@ class RuntimeInstructionEnumVisitor(EnumVisitor):
 class RuntimeInstructionFromBytecodeMethodVisitor(OpcodeVisitor):
     def prefix(self):
         yield "impl RuntimeInstruction {\n" + \
-            "pub fn from_bytecode(bc: &crate::bytecode::Bytecode, i: usize) -> (RuntimeInstruction, usize) {\n" + \
+            "pub fn from_bytecode(bc: &crate::bytecode::Bytecode, i: usize) -> Option<(RuntimeInstruction, usize)> {\n" + \
             "let mut idx = i; let b = crate::opcodes::Opcode::from(bc.read_u8(idx)); \n" + \
             "idx += 1; match b {\n"
     def opcode(self, opcode):
@@ -24,7 +24,7 @@ class RuntimeInstructionFromBytecodeMethodVisitor(OpcodeVisitor):
         runtime_operands = opcode.runtime_operands
         result = f"          crate::opcodes::Opcode::{name} => {{"
         if len(runtime_operands) == 0:
-            result = result + "\n" + f"              (RuntimeInstruction::{name}, idx)"
+            result = result + "\n" + f"              Some((RuntimeInstruction::{name}, idx))"
         else:
             ops = ""
             for i in range(len(runtime_operands)):
@@ -32,11 +32,11 @@ class RuntimeInstructionFromBytecodeMethodVisitor(OpcodeVisitor):
                 result = result + "\n" + f"              let arg{i} = bc.read{"_u8" if argi == "u8" else "_u16"}(idx);"
                 result = result + "\n" + f"              idx += {"1" if argi == "u8" else "2"};"
                 ops = ops + f"arg{i},"
-            result = result + "\n" + f"              (RuntimeInstruction::{name}({ops}), idx)"
+            result = result + "\n" + f"              Some((RuntimeInstruction::{name}({ops}), idx))"
         result = result + "\n" + "          }"
         yield result
     def suffix(self):
-        yield '_ => { panic!("invalid opcode value") }\n}\n}\n}'
+        yield '_ => { None }\n}\n}\n}'
 
 def gen_instruction_runtime(src, path):
     with open(path, "w") as dst:

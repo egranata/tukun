@@ -71,6 +71,7 @@ pub struct InvalidTypeError {
 pub enum RunloopErrData {
     EmptyStack,
     InstrutionOutOfBounds,
+    InvalidBytecode,
     MissingInternValue(u16),
     InvalidOperands(RuntimeInstruction, Vec<RuntimeValue>),
     MissingFunction(String),
@@ -107,7 +108,11 @@ fn bytecode_run_loop<'a>(ctx: &'a BytecodeContext<'a>, env: &mut Environment) ->
         if cur_ptr >= ctx.body().len() {
             err_ret!(cur_ptr, RunloopErrData::InstrutionOutOfBounds);
         }
-        let (inst, new_ip) = RuntimeInstruction::from_bytecode(ctx.body(), cur_ptr);
+        let opcode_maybe = RuntimeInstruction::from_bytecode(ctx.body(), cur_ptr);
+        if opcode_maybe.is_none() {
+            err_ret!(cur_ptr, RunloopErrData::InvalidBytecode);
+        }
+        let (inst, new_ip) = opcode_maybe.unwrap();
         ip = new_ip;
 
         log_debug!(LOG_RUNLOOP, "running opcode {inst:?}");
