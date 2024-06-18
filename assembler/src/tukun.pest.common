@@ -3,7 +3,7 @@ WHITESPACE = _{ " " | "\t" | "\r" | "\n" }
 alpha = { 'a'..'z' | 'A'..'Z' }
 digit = { '0'..'9' }
 ident = @{ !digit ~ (alpha | digit)+ }
-number = { digit+ }
+integer = { digit+ }
 label = @{":" ~ ident}
 string = ${ "\"" ~ inner ~ "\"" }
 inner = @{ char* }
@@ -14,13 +14,13 @@ char = {
 }
 
 type_name = {string}
-type_array = {^"array(" ~ #count = number ~ "," ~ #of = type_descriptor ~ ")"}
+type_array = {^"array(" ~ #count = integer ~ "," ~ #of = type_descriptor ~ ")"}
 type_record = {^"record(" ~ type_descriptor ~ ("," ~ type_descriptor)* ~ ")"}
 
 type_descriptor = {type_name | type_array | type_record}
 
 attribute_module_name = {^"@modname" ~ #value = string}
-interned_integer = {^"%const" ~ #name = string ~ "=" ~ #value = number}
+interned_integer = {^"%const" ~ #name = string ~ "=" ~ #value = integer}
 interned_string = {^"%const" ~ #name = string ~ "=" ~ #value = string}
 typedef = {^"%typedef" ~ #name = string ~ "=" ~ #value = type_descriptor}
 

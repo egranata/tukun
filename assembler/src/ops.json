@@ -148,7 +148,7 @@
     },
     {
         "name": "PUSH",
-        "pest_args": "#idx = (number | string)",
+        "pest_args": "#idx = (integer | string)",
         "ast_args": ["Either<u16, String>"],
         "trivial_ast": false,
         "trivial_lowering": false
@@ -176,14 +176,14 @@
     },
     {
         "name": "FROMSLOT",
-        "pest_args": "#idx = number",
+        "pest_args": "#idx = integer",
         "ast_args": ["u16"],
         "trivial_ast": false,
         "trivial_lowering": false
     },
     {
         "name": "TOSLOT",
-        "pest_args": "#idx = number",
+        "pest_args": "#idx = integer",
         "ast_args": ["u16"],
         "trivial_ast": false,
         "trivial_lowering": false
