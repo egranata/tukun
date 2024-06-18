@@ -793,3 +793,67 @@ fn main
         Some("com.tukunc.testmodule.fail:0\ncom.tukunc.testmodule.main:9"),
     );
 }
+
+#[test]
+fn test_define_int_add() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+%const "three" = 3
+%const "two" = 2
+fn main
+  :entry
+    push "three"
+    push "two"
+    add
+    ret
+"#;
+    run_and_check_stack(input, &[rv_int!(5)]);
+}
+
+#[test]
+fn test_define_int_add_ovf() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+%const "large_num" = 18446744073709551613
+%const "ten" = 10
+fn main
+  :entry
+    push "large_num"
+    push "ten"
+    add
+    ret
+"#;
+    run_and_check_stack(input, &[rv_int!(7)]);
+}
+
+#[test]
+fn test_define_int_sub() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+%const "five" = 5
+%const "two" = 2
+fn main
+  :entry
+    push "two"
+    push "five"
+    sub
+    ret
+"#;
+    run_and_check_stack(input, &[rv_int!(3)]);
+}
+
+#[test]
+fn test_define_int_sub_ovf() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+%const "five" = 5
+%const "two" = 2
+fn main
+  :entry
+    push "five"
+    push "two"
+    sub
+    ret
+"#;
+    run_and_check_stack(input, &[rv_int!(18446744073709551613)]);
+}

@@ -14,6 +14,7 @@ pub enum RuntimeInstruction {
     FROMSLOT(u16),
     TOSLOT(u16),
     ADD,
+    SUB,
     EQUAL,
     NOT,
     JUMP(u16),
@@ -64,6 +65,7 @@ impl RuntimeInstruction {
                 Some((RuntimeInstruction::TOSLOT(arg0), idx))
             }
             crate::opcodes::Opcode::ADD => Some((RuntimeInstruction::ADD, idx)),
+            crate::opcodes::Opcode::SUB => Some((RuntimeInstruction::SUB, idx)),
             crate::opcodes::Opcode::EQUAL => Some((RuntimeInstruction::EQUAL, idx)),
             crate::opcodes::Opcode::NOT => Some((RuntimeInstruction::NOT, idx)),
             crate::opcodes::Opcode::JUMP => {

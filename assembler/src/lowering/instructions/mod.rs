@@ -23,6 +23,7 @@ pub(crate) fn lower_instruction(
 ) -> Vec<InstructionDef> {
     trivial_lowering!(input, NOP);
     trivial_lowering!(input, ADD);
+    trivial_lowering!(input, SUB);
     trivial_lowering!(input, RET);
     trivial_lowering!(input, FLOOKUP);
     trivial_lowering!(input, TLOOKUP);

@@ -12,6 +12,7 @@ use either::Either;
 pub enum Instruction {
     NOP,
     ADD,
+    SUB,
     RET,
     FLOOKUP,
     TLOOKUP,

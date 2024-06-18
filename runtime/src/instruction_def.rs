@@ -14,6 +14,7 @@ pub enum InstructionDef {
     FROMSLOT(u16),
     TOSLOT(u16),
     ADD,
+    SUB,
     EQUAL,
     NOT,
     JUMP(crate::builder::BasicBlock),
@@ -46,6 +47,7 @@ impl InstructionDef {
             InstructionDef::FROMSLOT(_) => 1 + core::mem::size_of::<u16>(),
             InstructionDef::TOSLOT(_) => 1 + core::mem::size_of::<u16>(),
             InstructionDef::ADD => 1,
+            InstructionDef::SUB => 1,
             InstructionDef::EQUAL => 1,
             InstructionDef::NOT => 1,
             InstructionDef::JUMP(_) => 1 + core::mem::size_of::<u16>(),
@@ -80,6 +82,7 @@ impl InstructionDef {
             InstructionDef::FROMSLOT(_) => false,
             InstructionDef::TOSLOT(_) => false,
             InstructionDef::ADD => false,
+            InstructionDef::SUB => false,
             InstructionDef::EQUAL => false,
             InstructionDef::NOT => false,
             InstructionDef::JUMP(_) => true,
@@ -140,6 +143,9 @@ impl InstructionDef {
             }
             InstructionDef::ADD => {
                 bc.write_u8(u8::from(crate::opcodes::Opcode::ADD));
+            }
+            InstructionDef::SUB => {
+                bc.write_u8(u8::from(crate::opcodes::Opcode::SUB));
             }
             InstructionDef::EQUAL => {
                 bc.write_u8(u8::from(crate::opcodes::Opcode::EQUAL));

@@ -14,6 +14,13 @@
         "trivial_lowering": true
     },
     {
+        "name": "SUB",
+        "pest_args": "",
+        "ast_args": [],
+        "trivial_ast": true,
+        "trivial_lowering": true
+    },
+    {
         "name": "RET",
         "pest_args": "",
         "ast_args": [],

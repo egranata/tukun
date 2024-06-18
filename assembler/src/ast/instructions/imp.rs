@@ -13,6 +13,7 @@ impl super::Instruction {
         let rule = p.as_rule();
         trivial_ast!(rule, stmt_NOP, NOP);
         trivial_ast!(rule, stmt_ADD, ADD);
+        trivial_ast!(rule, stmt_SUB, SUB);
         trivial_ast!(rule, stmt_RET, RET);
         trivial_ast!(rule, stmt_FLOOKUP, FLOOKUP);
         trivial_ast!(rule, stmt_TLOOKUP, TLOOKUP);

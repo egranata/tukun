@@ -145,11 +145,27 @@ fn bytecode_run_loop<'a>(ctx: &'a BytecodeContext<'a>, env: &mut Environment) ->
                 let x = stack_pop!(cur_ptr, env, inst);
                 let y = stack_pop!(cur_ptr, env, inst);
                 match (&x, &y) {
-                    (RuntimeValue::Integer(x), RuntimeValue::Integer(y)) => {
-                        env.runtime_stack.push(RuntimeValue::Integer(x + y))
-                    }
+                    (RuntimeValue::Integer(x), RuntimeValue::Integer(y)) => env
+                        .runtime_stack
+                        .push(RuntimeValue::Integer(x.wrapping_add(*y))),
                     (RuntimeValue::Float(x), RuntimeValue::Float(y)) => {
                         env.runtime_stack.push(RuntimeValue::Float(x + y))
+                    }
+                    (_, _) => {
+                        err_ret!(cur_ptr, RunloopErrData::InvalidOperands(inst, vec![x, y]));
+                    }
+                }
+            }
+            RuntimeInstruction::SUB => {
+                let x = stack_pop!(cur_ptr, env, inst);
+                let y = stack_pop!(cur_ptr, env, inst);
+                match (&x, &y) {
+                    (RuntimeValue::Integer(x), RuntimeValue::Integer(y)) => {
+                        env.runtime_stack
+                            .push(RuntimeValue::Integer(x.wrapping_sub(*y)));
+                    }
+                    (RuntimeValue::Float(x), RuntimeValue::Float(y)) => {
+                        env.runtime_stack.push(RuntimeValue::Float(x - y));
                     }
                     (_, _) => {
                         err_ret!(cur_ptr, RunloopErrData::InvalidOperands(inst, vec![x, y]));

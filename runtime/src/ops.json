@@ -84,6 +84,13 @@
         "is_terminal": false
     },
     {
+        "name": "SUB",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    },
+    {
         "name": "EQUAL",
         "runtime_operands": [],
         "builder_operands": [],

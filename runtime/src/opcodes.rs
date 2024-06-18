@@ -15,6 +15,7 @@ pub enum Opcode {
     FROMSLOT,
     TOSLOT,
     ADD,
+    SUB,
     EQUAL,
     NOT,
     JUMP,
