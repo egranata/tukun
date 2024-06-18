@@ -164,6 +164,19 @@ fn main
 }
 
 #[test]
+fn test_use_named_float_constant() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+%const "fp" = 1.25
+fn main
+  :entry
+    push "fp"
+    ret
+"#;
+    run_and_check_stack(input, &[RuntimeValue::Float(1.25)]);
+}
+
+#[test]
 fn test_mkarrtype() {
     let input = r#"
 @modname "com.tukunc.testmodule"

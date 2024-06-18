@@ -4,6 +4,7 @@ alpha = { 'a'..'z' | 'A'..'Z' }
 digit = { '0'..'9' }
 ident = @{ !digit ~ (alpha | digit)+ }
 integer = { digit+ }
+float = { digit+ ~ "." ~ digit* }
 label = @{":" ~ ident}
 string = ${ "\"" ~ inner ~ "\"" }
 inner = @{ char* }
@@ -21,10 +22,11 @@ type_descriptor = {type_name | type_array | type_record}
 
 attribute_module_name = {^"@modname" ~ #value = string}
 interned_integer = {^"%const" ~ #name = string ~ "=" ~ #value = integer}
+interned_float = {^"%const" ~ #name = string ~ "=" ~ #value = float}
 interned_string = {^"%const" ~ #name = string ~ "=" ~ #value = string}
 typedef = {^"%typedef" ~ #name = string ~ "=" ~ #value = type_descriptor}
 
-interned_value = {interned_integer | interned_string}
+interned_value = {interned_float | interned_integer | interned_string}
 
 attribute = {attribute_module_name}
 

@@ -15,6 +15,17 @@ impl Constant {
         let mut f = p.into_inner();
         if let Some(bb) = f.next() {
             match bb.as_rule() {
+                Rule::interned_float => {
+                    let inner = bb.into_inner();
+                    let value = inner.find_first_tagged("value").expect("need a value");
+                    let value = value.as_str().parse::<f64>().expect("invalid float");
+                    let name = inner.find_first_tagged("name").expect("need a name");
+                    let name = parse_string_trim(name.as_str());
+                    Ok(Self {
+                        name,
+                        val: InternValue::Float(value),
+                    })
+                }
                 Rule::interned_integer => {
                     let inner = bb.into_inner();
                     let value = inner.find_first_tagged("value").expect("need a value");

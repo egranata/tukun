@@ -1,2 +1,2 @@
 #!/bin/sh
-cargo run --bin tr -- $@
+cargo run --bin runner -- $@
