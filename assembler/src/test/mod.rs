@@ -4,7 +4,7 @@ use runtime::{
     module_definition::ModuleDef,
     runloop::{self, RunloopError, RunloopResult},
     runtime_module::RuntimeModule,
-    rv_arr, rv_bool, rv_int, rv_str,
+    rv_arr, rv_bool, rv_flt, rv_int, rv_str,
     types::{array::ArrayType, record::RecordType, RuntimeType},
     values::{record::Record, RuntimeValue},
 };
@@ -173,7 +173,7 @@ fn main
     push "fp"
     ret
 "#;
-    run_and_check_stack(input, &[RuntimeValue::Float(1.25)]);
+    run_and_check_stack(input, &[rv_flt!(1.25)]);
 }
 
 #[test]

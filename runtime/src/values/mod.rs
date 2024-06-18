@@ -82,6 +82,13 @@ macro_rules! rv_int {
 }
 
 #[macro_export]
+macro_rules! rv_flt {
+    ($l:expr) => {
+        $crate::values::RuntimeValue::Float($l)
+    };
+}
+
+#[macro_export]
 macro_rules! rv_bool {
     ($l:expr) => {
         $crate::values::RuntimeValue::Logical($l)
