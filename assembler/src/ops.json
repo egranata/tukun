@@ -161,6 +161,13 @@
         "trivial_lowering": false
     },
     {
+        "name": "LPUSH",
+        "pest_args": "#val = (float | integer | string)",
+        "ast_args": ["InternValue"],
+        "trivial_ast": false,
+        "trivial_lowering": false
+    },
+    {
         "name": "JUMP",
         "pest_args": "#tgt = label",
         "ast_args": ["String"],

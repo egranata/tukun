@@ -1,7 +1,6 @@
 use std::{cell::RefCell, rc::Rc};
 
-use crate::instruction_def::InstructionDef;
-use crate::{bytecode::Bytecode, module_definition::FunctionDef};
+use crate::{bytecode::Bytecode, instruction_def::InstructionDef, module_definition::FunctionDef};
 
 #[derive(Debug)]
 struct BasicBlockImpl {

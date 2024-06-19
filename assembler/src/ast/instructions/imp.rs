@@ -36,6 +36,9 @@ impl super::Instruction {
         if matches!(rule, Rule::stmt_PUSH) {
             return super::push::from_parse_tree(p);
         }
+        if matches!(rule, Rule::stmt_LPUSH) {
+            return super::lpush::from_parse_tree(p);
+        }
         if matches!(rule, Rule::stmt_JUMP) {
             return super::jump::from_parse_tree(p);
         }

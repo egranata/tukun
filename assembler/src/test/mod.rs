@@ -857,3 +857,17 @@ fn main
 "#;
     run_and_check_stack(input, &[rv_int!(18446744073709551613)]);
 }
+
+#[test]
+fn test_use_litpush() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+fn main
+  :entry
+    lpush 7
+    lpush 1.25
+    lpush "hello world"
+    ret
+"#;
+    run_and_check_stack(input, &[rv_str!("hello world"), rv_flt!(1.25), rv_int!(7)]);
+}

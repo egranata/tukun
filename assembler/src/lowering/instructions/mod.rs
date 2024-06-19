@@ -4,6 +4,7 @@ mod fcall;
 mod fromslot;
 mod jtrue;
 mod jump;
+mod lpush;
 mod push;
 mod toslot;
 use crate::ast::{instructions::Instruction, module::Module};
@@ -45,6 +46,9 @@ pub(crate) fn lower_instruction(
     trivial_lowering!(input, MKRECTYPE);
     if let Instruction::PUSH(_) = input {
         return push::lower_instruction(ast, mdef, input, b);
+    }
+    if let Instruction::LPUSH(_) = input {
+        return lpush::lower_instruction(ast, mdef, input, b);
     }
     if let Instruction::JUMP(_) = input {
         return jump::lower_instruction(ast, mdef, input, b);

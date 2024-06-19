@@ -19,9 +19,11 @@ class GenInstructionEnum(EnumVisitor):
         yield "mod fromslot;"
         yield "mod jtrue;"
         yield "mod jump;"
+        yield "mod lpush;"
         yield "mod push;"
         yield "mod toslot;"
         yield "use either::Either;"
+        yield "use runtime::intern_value::InternValue;"
         for p in super().prefix():
             yield p
 

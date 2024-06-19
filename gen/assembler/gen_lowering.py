@@ -21,6 +21,7 @@ class GenInstructionLowering(OpcodeVisitor):
         yield "mod fromslot;"
         yield "mod jtrue;"
         yield "mod jump;"
+        yield "mod lpush;"
         yield "mod push;"
         yield "mod toslot;"
         yield "use runtime::{instruction_def::InstructionDef, module_definition::ModuleDef};"
