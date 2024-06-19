@@ -16,6 +16,8 @@ pub enum RuntimeInstruction {
     ADD,
     SUB,
     EQUAL,
+    AND,
+    OR,
     NOT,
     JUMP(u16),
     JTRUE(u16),
@@ -67,6 +69,8 @@ impl RuntimeInstruction {
             crate::opcodes::Opcode::ADD => Some((RuntimeInstruction::ADD, idx)),
             crate::opcodes::Opcode::SUB => Some((RuntimeInstruction::SUB, idx)),
             crate::opcodes::Opcode::EQUAL => Some((RuntimeInstruction::EQUAL, idx)),
+            crate::opcodes::Opcode::AND => Some((RuntimeInstruction::AND, idx)),
+            crate::opcodes::Opcode::OR => Some((RuntimeInstruction::OR, idx)),
             crate::opcodes::Opcode::NOT => Some((RuntimeInstruction::NOT, idx)),
             crate::opcodes::Opcode::JUMP => {
                 let arg0 = bc.read_u16(idx);

@@ -871,3 +871,38 @@ fn main
 "#;
     run_and_check_stack(input, &[rv_str!("hello world"), rv_flt!(1.25), rv_int!(7)]);
 }
+
+#[test]
+fn test_and() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+fn main
+  :entry
+    lpush 3
+    lpush 3
+    equal
+    dup
+    not
+    and
+    ret
+"#;
+    run_and_check_stack(input, &[rv_bool!(false)]);
+}
+
+#[test]
+fn test_or() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+fn main
+  :entry
+    lpush 3
+    lpush 3
+    equal
+    lpush 3
+    lpush 2
+    equal
+    or
+    ret
+"#;
+    run_and_check_stack(input, &[rv_bool!(true)]);
+}

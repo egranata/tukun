@@ -77,6 +77,20 @@
         "trivial_lowering": true
     },
     {
+        "name": "OR",
+        "pest_args": "",
+        "ast_args": [],
+        "trivial_ast": true,
+        "trivial_lowering": true
+    },
+    {
+        "name": "AND",
+        "pest_args": "",
+        "ast_args": [],
+        "trivial_ast": true,
+        "trivial_lowering": true
+    },
+    {
         "name": "DUP",
         "pest_args": "",
         "ast_args": [],

@@ -45,6 +45,28 @@ macro_rules! typed_pop {
     }};
 }
 
+macro_rules! typed_pop2 {
+    ($ptr:expr, $env:expr, $inst:expr, $t1:path, $t2:path) => {{
+        if let Some(v1) = $env.runtime_stack.try_pop() {
+            if let Some(v2) = $env.runtime_stack.try_pop() {
+                if matches!(v1, $t1(_)) && matches!(v2, $t2(_)) {
+                    if let ($t1(p1), $t2(p2)) = (v1, v2) {
+                        (p1, p2)
+                    } else {
+                        panic!("unwrapping failed");
+                    }
+                } else {
+                    err_ret!($ptr, RunloopErrData::InvalidOperands($inst, vec![v1, v2]));
+                }
+            } else {
+                err_ret!($ptr, RunloopErrData::EmptyStack);
+            }
+        } else {
+            err_ret!($ptr, RunloopErrData::EmptyStack);
+        }
+    }};
+}
+
 struct BytecodeContext<'a> {
     m: &'a RuntimeModule,
     b: &'a Bytecode,
@@ -189,6 +211,26 @@ fn bytecode_run_loop<'a>(ctx: &'a BytecodeContext<'a>, env: &mut Environment) ->
             RuntimeInstruction::NOT => {
                 let b = typed_pop!(cur_ptr, env, inst, RuntimeValue::Logical);
                 env.runtime_stack.push(crate::rv_bool!(!b));
+            }
+            RuntimeInstruction::AND => {
+                let (b1, b2) = typed_pop2!(
+                    cur_ptr,
+                    env,
+                    inst,
+                    RuntimeValue::Logical,
+                    RuntimeValue::Logical
+                );
+                env.runtime_stack.push(crate::rv_bool!(b1 && b2));
+            }
+            RuntimeInstruction::OR => {
+                let (b1, b2) = typed_pop2!(
+                    cur_ptr,
+                    env,
+                    inst,
+                    RuntimeValue::Logical,
+                    RuntimeValue::Logical
+                );
+                env.runtime_stack.push(crate::rv_bool!(b1 || b2));
             }
             RuntimeInstruction::RET => return Ok(()),
             RuntimeInstruction::FLOOKUP => {

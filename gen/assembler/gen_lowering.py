@@ -12,7 +12,10 @@ class GenInstructionLowering(OpcodeVisitor):
         if triv:
             yield f'    trivial_lowering!(input, {name});'
         else:
-            yield f"    if let Instruction::{name}(_) = input {{"
+            if len(opcode.ast_args) == 0:
+                yield f"    if let Instruction::{name} = input {{"
+            else:
+                yield f"    if let Instruction::{name}(_) = input {{"
             yield f"        return {name.lower()}::lower_instruction(ast, mdef, input, b);"
             yield "    }"
 

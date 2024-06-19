@@ -23,6 +23,8 @@ pub enum Instruction {
     NEWREC,
     EQUAL,
     NOT,
+    OR,
+    AND,
     DUP,
     SWAP,
     POP,

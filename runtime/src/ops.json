@@ -98,6 +98,20 @@
         "is_terminal": false
     },
     {
+        "name": "AND",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    },
+    {
+        "name": "OR",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    },
+    {
         "name": "NOT",
         "runtime_operands": [],
         "builder_operands": [],

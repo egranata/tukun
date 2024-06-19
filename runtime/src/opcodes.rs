@@ -17,6 +17,8 @@ pub enum Opcode {
     ADD,
     SUB,
     EQUAL,
+    AND,
+    OR,
     NOT,
     JUMP,
     JTRUE,
