@@ -34,6 +34,8 @@ pub enum Instruction {
     RECGET,
     RECSET,
     TYPEOF,
+    I2B,
+    I2F,
     MKARRTYPE,
     MKRECTYPE,
     PUSH(Either<u16, String>),

@@ -44,6 +44,8 @@ pub(crate) fn lower_instruction(
     trivial_lowering!(input, RECGET);
     trivial_lowering!(input, RECSET);
     trivial_lowering!(input, TYPEOF);
+    trivial_lowering!(input, I2B);
+    trivial_lowering!(input, I2F);
     trivial_lowering!(input, MKARRTYPE);
     trivial_lowering!(input, MKRECTYPE);
     if let Instruction::PUSH(_) = input {

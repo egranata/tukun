@@ -33,6 +33,8 @@ impl super::Instruction {
         trivial_ast!(rule, stmt_RECGET, RECGET);
         trivial_ast!(rule, stmt_RECSET, RECSET);
         trivial_ast!(rule, stmt_TYPEOF, TYPEOF);
+        trivial_ast!(rule, stmt_I2B, I2B);
+        trivial_ast!(rule, stmt_I2F, I2F);
         trivial_ast!(rule, stmt_MKARRTYPE, MKARRTYPE);
         trivial_ast!(rule, stmt_MKRECTYPE, MKRECTYPE);
         if matches!(rule, Rule::stmt_PUSH) {

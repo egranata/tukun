@@ -795,7 +795,7 @@ fn main
 }
 
 #[test]
-fn test_define_int_add() {
+fn test_int_add() {
     let input = r#"
 @modname "com.tukunc.testmodule"
 %const "three" = 3
@@ -811,7 +811,7 @@ fn main
 }
 
 #[test]
-fn test_define_int_add_ovf() {
+fn test_int_add_ovf() {
     let input = r#"
 @modname "com.tukunc.testmodule"
 %const "large_num" = 18446744073709551613
@@ -827,7 +827,7 @@ fn main
 }
 
 #[test]
-fn test_define_int_sub() {
+fn test_int_sub() {
     let input = r#"
 @modname "com.tukunc.testmodule"
 %const "five" = 5
@@ -843,7 +843,7 @@ fn main
 }
 
 #[test]
-fn test_define_int_sub_ovf() {
+fn test_int_sub_ovf() {
     let input = r#"
 @modname "com.tukunc.testmodule"
 %const "five" = 5
@@ -878,9 +878,8 @@ fn test_and() {
 @modname "com.tukunc.testmodule"
 fn main
   :entry
-    lpush 3
-    lpush 3
-    equal
+    lpush 1
+    i2b
     dup
     not
     and
@@ -895,14 +894,43 @@ fn test_or() {
 @modname "com.tukunc.testmodule"
 fn main
   :entry
-    lpush 3
-    lpush 3
-    equal
-    lpush 3
-    lpush 2
-    equal
+    lpush 1
+    i2b
+    dup
+    not
     or
     ret
 "#;
     run_and_check_stack(input, &[rv_bool!(true)]);
+}
+
+#[test]
+fn test_i2b() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+fn main
+  :entry
+    lpush 5
+    i2b
+    lpush 0
+    i2b
+    ret
+"#;
+    run_and_check_stack(input, &[rv_bool!(false), rv_bool!(true)]);
+}
+
+#[test]
+fn test_i2f() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+fn main
+  :entry
+    lpush 5
+    i2f
+    ret
+"#;
+    let mut env = run_and_check_stack(input, &[]);
+    assert!(env.stack_len() == 1);
+    let val = *env.pop_value().as_float().expect("expected a float value");
+    assert!((val - 5.0).abs() < 0.01);
 }

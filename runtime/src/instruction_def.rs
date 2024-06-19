@@ -18,6 +18,8 @@ pub enum InstructionDef {
     EQUAL,
     AND,
     OR,
+    I2B,
+    I2F,
     NOT,
     JUMP(crate::builder::BasicBlock),
     JTRUE(crate::builder::BasicBlock),
@@ -53,6 +55,8 @@ impl InstructionDef {
             InstructionDef::EQUAL => 1,
             InstructionDef::AND => 1,
             InstructionDef::OR => 1,
+            InstructionDef::I2B => 1,
+            InstructionDef::I2F => 1,
             InstructionDef::NOT => 1,
             InstructionDef::JUMP(_) => 1 + core::mem::size_of::<u16>(),
             InstructionDef::JTRUE(_) => 1 + core::mem::size_of::<u16>(),
@@ -90,6 +94,8 @@ impl InstructionDef {
             InstructionDef::EQUAL => false,
             InstructionDef::AND => false,
             InstructionDef::OR => false,
+            InstructionDef::I2B => false,
+            InstructionDef::I2F => false,
             InstructionDef::NOT => false,
             InstructionDef::JUMP(_) => true,
             InstructionDef::JTRUE(_) => true,
@@ -161,6 +167,12 @@ impl InstructionDef {
             }
             InstructionDef::OR => {
                 bc.write_u8(u8::from(crate::opcodes::Opcode::OR));
+            }
+            InstructionDef::I2B => {
+                bc.write_u8(u8::from(crate::opcodes::Opcode::I2B));
+            }
+            InstructionDef::I2F => {
+                bc.write_u8(u8::from(crate::opcodes::Opcode::I2F));
             }
             InstructionDef::NOT => {
                 bc.write_u8(u8::from(crate::opcodes::Opcode::NOT));

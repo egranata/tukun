@@ -112,6 +112,20 @@
         "is_terminal": false
     },
     {
+        "name": "I2B",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    },
+    {
+        "name": "I2F",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    },
+    {
         "name": "NOT",
         "runtime_operands": [],
         "builder_operands": [],

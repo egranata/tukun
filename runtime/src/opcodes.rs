@@ -19,6 +19,8 @@ pub enum Opcode {
     EQUAL,
     AND,
     OR,
+    I2B,
+    I2F,
     NOT,
     JUMP,
     JTRUE,

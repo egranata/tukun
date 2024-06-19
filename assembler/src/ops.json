@@ -154,6 +154,20 @@
         "trivial_lowering": true
     },
     {
+        "name": "I2B",
+        "pest_args": "",
+        "ast_args": [],
+        "trivial_ast": true,
+        "trivial_lowering": true
+    },
+    {
+        "name": "I2F",
+        "pest_args": "",
+        "ast_args": [],
+        "trivial_ast": true,
+        "trivial_lowering": true
+    },
+    {
         "name": "MKARRTYPE",
         "pest_args": "",
         "ast_args": [],

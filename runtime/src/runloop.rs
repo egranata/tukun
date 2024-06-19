@@ -383,6 +383,14 @@ fn bytecode_run_loop<'a>(ctx: &'a BytecodeContext<'a>, env: &mut Environment) ->
                 let rt = RuntimeValue::Type(RuntimeType::Record(Box::new(rt)));
                 env.runtime_stack.push(rt);
             }
+            RuntimeInstruction::I2B => {
+                let val = typed_pop!(cur_ptr, env, inst, RuntimeValue::Integer);
+                env.runtime_stack.push(crate::rv_bool!(val != 0));
+            }
+            RuntimeInstruction::I2F => {
+                let val = typed_pop!(cur_ptr, env, inst, RuntimeValue::Integer);
+                env.runtime_stack.push(crate::rv_flt!(val as f64));
+            }
         }
     }
 }
