@@ -84,3 +84,22 @@ impl Record {
         RuntimeType::Record(Box::new(self.a.borrow().value_type.clone()))
     }
 }
+
+impl PartialEq for Record {
+    fn eq(&self, other: &Self) -> bool {
+        if self.len() != other.len() {
+            false
+        } else {
+            for i in 0..self.len() {
+                let x1x = self.get(i);
+                let x2x = other.get(i);
+                if x1x != x2x {
+                    return false;
+                }
+            }
+            true
+        }
+    }
+}
+
+impl Eq for Record {}

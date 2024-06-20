@@ -91,7 +91,21 @@
         "is_terminal": false
     },
     {
-        "name": "EQUAL",
+        "name": "EQ",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    },
+    {
+        "name": "LT",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    },
+    {
+        "name": "GT",
         "runtime_operands": [],
         "builder_operands": [],
         "operand_writers": [],

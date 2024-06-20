@@ -63,7 +63,21 @@
         "trivial_lowering": true
     },
     {
-        "name": "EQUAL",
+        "name": "EQ",
+        "pest_args": "",
+        "ast_args": [],
+        "trivial_ast": true,
+        "trivial_lowering": true
+    },
+    {
+        "name": "GT",
+        "pest_args": "",
+        "ast_args": [],
+        "trivial_ast": true,
+        "trivial_lowering": true
+    },
+    {
+        "name": "LT",
         "pest_args": "",
         "ast_args": [],
         "trivial_ast": true,

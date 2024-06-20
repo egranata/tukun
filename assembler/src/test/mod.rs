@@ -268,11 +268,11 @@ fn main
   :entry
     push "six"
     push "seven"
-    equal
+    eq
     jtrue :fail
     push "six"
     push "six"
-    equal
+    eq
     jtrue :pass
   :fail
     push "six"
@@ -474,7 +474,7 @@ fn main
     typeof
     push "one"
     push "one"
-    equal
+    eq
     typeof
     ret
 "#;
@@ -564,7 +564,7 @@ fn main
     push "four"
     dup
     dup
-    equal
+    eq
     push "hello"
     push "integer"
     tlookup
@@ -594,7 +594,7 @@ fn main
     push "three"
     dup
     push "four"
-    equal
+    eq
     push "hello"
     push "com.tukunc.testmodule.rec"
     tlookup
@@ -619,7 +619,7 @@ fn main
     push "three"
     dup
     push "four"
-    equal
+    eq
     push "hello"
     push "com.tukunc.testmodule.rec"
     tlookup
@@ -645,7 +645,7 @@ fn main
     push "three"
     dup
     push "four"
-    equal
+    eq
     push "hello"
     push "com.tukunc.testmodule.rec"
     tlookup
@@ -653,7 +653,7 @@ fn main
     push "one"
     push "three"
     dup
-    equal
+    eq
     recset
     ret
 "#;
@@ -709,10 +709,10 @@ fn main
   :entry
     push "five"
     push "five"
-    equal not
+    eq not
     push "five"
     push "four"
-    equal not
+    eq not
     ret
 "#;
     run_and_check_stack(input, &[rv_bool!(true), rv_bool!(false)]);
@@ -933,4 +933,72 @@ fn main
     assert!(env.stack_len() == 1);
     let val = *env.pop_value().as_float().expect("expected a float value");
     assert!((val - 5.0).abs() < 0.01);
+}
+
+#[test]
+fn test_int_less_than() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+fn main
+  :entry
+    lpush 5
+    lpush 3
+    lt
+    lpush 2
+    lpush 3
+    lt
+    ret
+"#;
+    run_and_check_stack(input, &[rv_bool!(false), rv_bool!(true)]);
+}
+
+#[test]
+fn test_int_greater_than() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+fn main
+  :entry
+    lpush 5
+    lpush 3
+    gt
+    lpush 2
+    lpush 3
+    gt
+    ret
+"#;
+    run_and_check_stack(input, &[rv_bool!(true), rv_bool!(false)]);
+}
+
+#[test]
+fn test_flt_less_than() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+fn main
+  :entry
+    lpush 1.25
+    lpush 0.25
+    lt
+    lpush 1.25
+    lpush 3.14
+    lt
+    ret
+"#;
+    run_and_check_stack(input, &[rv_bool!(false), rv_bool!(true)]);
+}
+
+#[test]
+fn test_flt_greater_than() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+fn main
+  :entry
+    lpush 1.25
+    lpush 3.14
+    gt
+    lpush 1.25
+    lpush 0.25
+    gt
+    ret
+"#;
+    run_and_check_stack(input, &[rv_bool!(false), rv_bool!(true)]);
 }

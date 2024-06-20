@@ -383,11 +383,11 @@ fn test_builder_jtrue() {
 
     entry.append_instruction(InstructionDef::PUSH(five as u16));
     entry.append_instruction(InstructionDef::PUSH(seven as u16));
-    entry.append_instruction(InstructionDef::EQUAL);
+    entry.append_instruction(InstructionDef::EQ);
     entry.append_instruction(InstructionDef::JTRUE(entry.clone()));
     entry.append_instruction(InstructionDef::PUSH(five as u16));
     entry.append_instruction(InstructionDef::PUSH(five as u16));
-    entry.append_instruction(InstructionDef::EQUAL);
+    entry.append_instruction(InstructionDef::EQ);
     entry.append_instruction(InstructionDef::JTRUE(next.clone()));
     entry.append_instruction(InstructionDef::JUMP(entry.clone()));
 

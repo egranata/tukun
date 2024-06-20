@@ -15,7 +15,9 @@ pub enum InstructionDef {
     TOSLOT(u16),
     ADD,
     SUB,
-    EQUAL,
+    EQ,
+    LT,
+    GT,
     AND,
     OR,
     I2B,
@@ -52,7 +54,9 @@ impl InstructionDef {
             InstructionDef::TOSLOT(_) => 1 + core::mem::size_of::<u16>(),
             InstructionDef::ADD => 1,
             InstructionDef::SUB => 1,
-            InstructionDef::EQUAL => 1,
+            InstructionDef::EQ => 1,
+            InstructionDef::LT => 1,
+            InstructionDef::GT => 1,
             InstructionDef::AND => 1,
             InstructionDef::OR => 1,
             InstructionDef::I2B => 1,
@@ -91,7 +95,9 @@ impl InstructionDef {
             InstructionDef::TOSLOT(_) => false,
             InstructionDef::ADD => false,
             InstructionDef::SUB => false,
-            InstructionDef::EQUAL => false,
+            InstructionDef::EQ => false,
+            InstructionDef::LT => false,
+            InstructionDef::GT => false,
             InstructionDef::AND => false,
             InstructionDef::OR => false,
             InstructionDef::I2B => false,
@@ -159,8 +165,14 @@ impl InstructionDef {
             InstructionDef::SUB => {
                 bc.write_u8(u8::from(crate::opcodes::Opcode::SUB));
             }
-            InstructionDef::EQUAL => {
-                bc.write_u8(u8::from(crate::opcodes::Opcode::EQUAL));
+            InstructionDef::EQ => {
+                bc.write_u8(u8::from(crate::opcodes::Opcode::EQ));
+            }
+            InstructionDef::LT => {
+                bc.write_u8(u8::from(crate::opcodes::Opcode::LT));
+            }
+            InstructionDef::GT => {
+                bc.write_u8(u8::from(crate::opcodes::Opcode::GT));
             }
             InstructionDef::AND => {
                 bc.write_u8(u8::from(crate::opcodes::Opcode::AND));

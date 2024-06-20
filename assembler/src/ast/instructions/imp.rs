@@ -20,7 +20,9 @@ impl super::Instruction {
         trivial_ast!(rule, stmt_CALL, CALL);
         trivial_ast!(rule, stmt_NEWARR, NEWARR);
         trivial_ast!(rule, stmt_NEWREC, NEWREC);
-        trivial_ast!(rule, stmt_EQUAL, EQUAL);
+        trivial_ast!(rule, stmt_EQ, EQ);
+        trivial_ast!(rule, stmt_GT, GT);
+        trivial_ast!(rule, stmt_LT, LT);
         trivial_ast!(rule, stmt_NOT, NOT);
         trivial_ast!(rule, stmt_OR, OR);
         trivial_ast!(rule, stmt_AND, AND);

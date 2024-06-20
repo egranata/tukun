@@ -6,7 +6,12 @@ use crate::{
     log_debug, log_subsystem,
     runtime_module::{RuntimeCallable, RuntimeModule},
     types::{array::ArrayType, record::RecordType, RuntimeType},
-    values::{array::Array, record::Record, RuntimeValue},
+    values::{
+        array::Array,
+        comparators::{compare_values, CompareResult},
+        record::Record,
+        RuntimeValue,
+    },
 };
 
 static LOG_RUNLOOP: LogSubsystem = log_subsystem!("runloop", crate::log::LogLevel::Error);
@@ -194,10 +199,26 @@ fn bytecode_run_loop<'a>(ctx: &'a BytecodeContext<'a>, env: &mut Environment) ->
                     }
                 }
             }
-            RuntimeInstruction::EQUAL => {
+            RuntimeInstruction::EQ => {
                 let x = stack_pop!(cur_ptr, env, inst);
                 let y = stack_pop!(cur_ptr, env, inst);
-                env.runtime_stack.push(RuntimeValue::Logical(x == y))
+                let cmp = compare_values(&x, &y);
+                env.runtime_stack
+                    .push(RuntimeValue::Logical(cmp == CompareResult::EqualTo));
+            }
+            RuntimeInstruction::GT => {
+                let x = stack_pop!(cur_ptr, env, inst);
+                let y = stack_pop!(cur_ptr, env, inst);
+                let cmp = compare_values(&x, &y);
+                env.runtime_stack
+                    .push(RuntimeValue::Logical(cmp == CompareResult::GreaterThan));
+            }
+            RuntimeInstruction::LT => {
+                let x = stack_pop!(cur_ptr, env, inst);
+                let y = stack_pop!(cur_ptr, env, inst);
+                let cmp = compare_values(&x, &y);
+                env.runtime_stack
+                    .push(RuntimeValue::Logical(cmp == CompareResult::LessThan));
             }
             RuntimeInstruction::JUMP(dst) => {
                 ip = dst as usize;
