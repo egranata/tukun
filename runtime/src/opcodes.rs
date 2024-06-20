@@ -3,50 +3,48 @@
 #[repr(u8)]
 #[derive(Debug)]
 pub enum Opcode {
-    NOP,
-    DUP,
-    SWAP,
-    POP,
-    PUSH,
-    FLOOKUP,
-    TLOOKUP,
-    CALL,
-    TYPEOF,
-    FROMSLOT,
-    TOSLOT,
-    ADD,
-    SUB,
-    EQ,
-    LT,
-    GT,
-    AND,
-    OR,
-    I2B,
-    I2F,
-    NOT,
-    JUMP,
-    JTRUE,
-    RET,
-    MKARRTYPE,
-    MKRECTYPE,
-    NEWARR,
-    ARRGET,
-    ARRSET,
-    ARRLEN,
-    NEWREC,
-    RECGET,
-    RECSET,
+    NOP = 0,
+    DUP = 1,
+    SWAP = 2,
+    POP = 3,
+    PUSH = 4,
+    FLOOKUP = 5,
+    TLOOKUP = 6,
+    CALL = 7,
+    TYPEOF = 8,
+    FROMSLOT = 9,
+    TOSLOT = 10,
+    ADD = 11,
+    SUB = 12,
+    EQ = 13,
+    LT = 14,
+    GT = 15,
+    AND = 16,
+    OR = 17,
+    I2B = 18,
+    I2F = 19,
+    NOT = 20,
+    JUMP = 21,
+    JTRUE = 22,
+    RET = 23,
+    MKARRTYPE = 24,
+    MKRECTYPE = 25,
+    NEWARR = 26,
+    ARRGET = 27,
+    ARRSET = 28,
+    ARRLEN = 29,
+    NEWREC = 30,
+    RECGET = 31,
+    RECSET = 32,
     MAX,
 }
 impl From<u8> for Opcode {
     fn from(value: u8) -> Self {
-        unsafe {
-            if value >= std::mem::transmute(Opcode::MAX) {
-                panic!("invalid opcode {value}")
-            } else {
-                std::mem::transmute(value)
-            }
+        let max = unsafe { std::mem::transmute(Opcode::MAX) };
+        if value >= max {
+            panic!("invalid opcode {value}")
         }
+        unsafe { std::mem::transmute(value) }
     }
 }
 impl From<Opcode> for u8 {
