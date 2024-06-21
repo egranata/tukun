@@ -936,6 +936,38 @@ fn main
 }
 
 #[test]
+fn test_b2i() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+fn main
+  :entry
+    lpush 5
+    i2b
+    b2i
+    lpush 0
+    i2b
+    b2i
+    ret
+"#;
+    run_and_check_stack(input, &[rv_int!(0), rv_int!(1)]);
+}
+
+#[test]
+fn test_f2i() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+fn main
+  :entry
+    lpush 2.3
+    f2i
+    lpush 2.8
+    f2i
+    ret
+"#;
+    run_and_check_stack(input, &[rv_int!(2), rv_int!(2)]);
+}
+
+#[test]
 fn test_int_less_than() {
     let input = r#"
 @modname "com.tukunc.testmodule"

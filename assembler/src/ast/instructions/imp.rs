@@ -37,6 +37,8 @@ impl super::Instruction {
         trivial_ast!(rule, stmt_TYPEOF, TYPEOF);
         trivial_ast!(rule, stmt_I2B, I2B);
         trivial_ast!(rule, stmt_I2F, I2F);
+        trivial_ast!(rule, stmt_B2I, B2I);
+        trivial_ast!(rule, stmt_F2I, F2I);
         trivial_ast!(rule, stmt_MKARRTYPE, MKARRTYPE);
         trivial_ast!(rule, stmt_MKRECTYPE, MKRECTYPE);
         if matches!(rule, Rule::stmt_PUSH) {

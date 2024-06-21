@@ -182,6 +182,20 @@
         "trivial_lowering": true
     },
     {
+        "name": "B2I",
+        "pest_args": "",
+        "ast_args": [],
+        "trivial_ast": true,
+        "trivial_lowering": true
+    },
+    {
+        "name": "F2I",
+        "pest_args": "",
+        "ast_args": [],
+        "trivial_ast": true,
+        "trivial_lowering": true
+    },
+    {
         "name": "MKARRTYPE",
         "pest_args": "",
         "ast_args": [],

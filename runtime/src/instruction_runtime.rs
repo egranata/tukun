@@ -22,6 +22,8 @@ pub enum RuntimeInstruction {
     OR,
     I2B,
     I2F,
+    B2I,
+    F2I,
     NOT,
     JUMP(u16),
     JTRUE(u16),
@@ -79,6 +81,8 @@ impl RuntimeInstruction {
             crate::opcodes::Opcode::OR => Some((RuntimeInstruction::OR, idx)),
             crate::opcodes::Opcode::I2B => Some((RuntimeInstruction::I2B, idx)),
             crate::opcodes::Opcode::I2F => Some((RuntimeInstruction::I2F, idx)),
+            crate::opcodes::Opcode::B2I => Some((RuntimeInstruction::B2I, idx)),
+            crate::opcodes::Opcode::F2I => Some((RuntimeInstruction::F2I, idx)),
             crate::opcodes::Opcode::NOT => Some((RuntimeInstruction::NOT, idx)),
             crate::opcodes::Opcode::JUMP => {
                 let arg0 = bc.read_u16(idx);

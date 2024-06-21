@@ -140,6 +140,20 @@
         "is_terminal": false
     },
     {
+        "name": "B2I",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    },
+    {
+        "name": "F2I",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    },
+    {
         "name": "NOT",
         "runtime_operands": [],
         "builder_operands": [],

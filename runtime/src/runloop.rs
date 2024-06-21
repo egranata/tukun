@@ -408,9 +408,18 @@ fn bytecode_run_loop<'a>(ctx: &'a BytecodeContext<'a>, env: &mut Environment) ->
                 let val = typed_pop!(cur_ptr, env, inst, RuntimeValue::Integer);
                 env.runtime_stack.push(crate::rv_bool!(val != 0));
             }
+            RuntimeInstruction::B2I => {
+                let val = typed_pop!(cur_ptr, env, inst, RuntimeValue::Logical);
+                env.runtime_stack
+                    .push(crate::rv_int!(if val { 1 } else { 0 }));
+            }
             RuntimeInstruction::I2F => {
                 let val = typed_pop!(cur_ptr, env, inst, RuntimeValue::Integer);
                 env.runtime_stack.push(crate::rv_flt!(val as f64));
+            }
+            RuntimeInstruction::F2I => {
+                let val = typed_pop!(cur_ptr, env, inst, RuntimeValue::Float);
+                env.runtime_stack.push(crate::rv_int!(val as u64));
             }
         }
     }

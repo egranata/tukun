@@ -38,6 +38,8 @@ pub enum Instruction {
     TYPEOF,
     I2B,
     I2F,
+    B2I,
+    F2I,
     MKARRTYPE,
     MKRECTYPE,
     PUSH(Either<u16, String>),
