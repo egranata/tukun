@@ -17,7 +17,7 @@ class GenOpcodesVisitor(OpcodeVisitor):
         yield "}"
         yield "impl From<u8> for Opcode {"
         yield "fn from(value: u8) -> Self {"
-        yield "let max = unsafe { std::mem::transmute(Opcode::MAX) };"
+        yield "let max = unsafe { std::mem::transmute::<Opcode, u8>(Opcode::MAX) };"
         yield 'if value >= max { panic!("invalid opcode {value}") }'
         yield "unsafe { std::mem::transmute(value) }"
         yield "}"

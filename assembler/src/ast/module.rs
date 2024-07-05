@@ -71,7 +71,7 @@ impl Module {
         }
 
         if let Some(name) = ret.attributes.get("modname") {
-            ret.name = name.to_owned();
+            name.clone_into(&mut ret.name);
         }
 
         Ok(ret)

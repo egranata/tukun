@@ -42,7 +42,7 @@ pub enum Opcode {
 }
 impl From<u8> for Opcode {
     fn from(value: u8) -> Self {
-        let max = unsafe { std::mem::transmute(Opcode::MAX) };
+        let max = unsafe { std::mem::transmute::<Opcode, u8>(Opcode::MAX) };
         if value >= max {
             panic!("invalid opcode {value}")
         }
