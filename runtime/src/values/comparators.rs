@@ -18,14 +18,26 @@ impl From<std::cmp::Ordering> for CompareResult {
     }
 }
 
-pub(crate) fn compare_values(v1: &RuntimeValue, v2: &RuntimeValue) -> CompareResult {
+pub(crate) fn compare_values(
+    v1: &RuntimeValue,
+    v2: &RuntimeValue,
+    signedness: bool,
+) -> CompareResult {
     use CompareResult::{EqualTo, Unspecified};
 
     if v1.get_type() != v2.get_type() {
         Unspecified
     } else {
         match (v1, v2) {
-            (RuntimeValue::Integer(i1), RuntimeValue::Integer(i2)) => From::from(i1.cmp(i2)),
+            (RuntimeValue::Integer(i1), RuntimeValue::Integer(i2)) => {
+                if signedness {
+                    let i1 = unsafe { std::mem::transmute::<u64, i64>(*i1) };
+                    let i2 = unsafe { std::mem::transmute::<u64, i64>(*i2) };
+                    From::from(i1.cmp(&i2))
+                } else {
+                    From::from(i1.cmp(i2))
+                }
+            }
             (RuntimeValue::Logical(b1), RuntimeValue::Logical(b2)) => {
                 if b1 == b2 {
                     EqualTo

@@ -202,21 +202,21 @@ fn bytecode_run_loop<'a>(ctx: &'a BytecodeContext<'a>, env: &mut Environment) ->
             RuntimeInstruction::EQ => {
                 let x = stack_pop!(cur_ptr, env, inst);
                 let y = stack_pop!(cur_ptr, env, inst);
-                let cmp = compare_values(&x, &y);
+                let cmp = compare_values(&x, &y, false);
                 env.runtime_stack
                     .push(RuntimeValue::Logical(cmp == CompareResult::EqualTo));
             }
             RuntimeInstruction::GT => {
                 let x = stack_pop!(cur_ptr, env, inst);
                 let y = stack_pop!(cur_ptr, env, inst);
-                let cmp = compare_values(&x, &y);
+                let cmp = compare_values(&x, &y, false);
                 env.runtime_stack
                     .push(RuntimeValue::Logical(cmp == CompareResult::GreaterThan));
             }
             RuntimeInstruction::LT => {
                 let x = stack_pop!(cur_ptr, env, inst);
                 let y = stack_pop!(cur_ptr, env, inst);
-                let cmp = compare_values(&x, &y);
+                let cmp = compare_values(&x, &y, false);
                 env.runtime_stack
                     .push(RuntimeValue::Logical(cmp == CompareResult::LessThan));
             }
