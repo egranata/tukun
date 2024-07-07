@@ -90,6 +90,19 @@ fn main
 }
 
 #[test]
+fn test_flt_value() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+fn main
+  :entry
+    lpush 1.25
+    lpush -0.25
+    ret
+"#;
+    run_and_check_stack(input, &[rv_flt!(-0.25), rv_flt!(1.25)]);
+}
+
+#[test]
 fn test_call_function_with_name() {
     let input = r#"
 @modname "com.tukunc.testmodule"
@@ -1055,7 +1068,7 @@ fn test_flt_less_than() {
 fn main
   :entry
     lpush 1.25
-    lpush 0.25
+    lpush -0.25
     lt
     lpush 1.25
     lpush 3.14
