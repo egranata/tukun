@@ -986,15 +986,15 @@ fn test_int_less_than() {
 @modname "com.tukunc.testmodule"
 fn main
   :entry
-    lpush 5
     lpush 3
+    lpush 4
     lt
-    lpush 2
-    lpush 3
+    lpush xFFFFFFFFFFFFFFFD;
+    lpush 1
     lt
     ret
 "#;
-    run_and_check_stack(input, &[rv_bool!(false), rv_bool!(true)]);
+    run_and_check_stack(input, &[rv_bool!(true), rv_bool!(false)]);
 }
 
 #[test]
@@ -1003,15 +1003,49 @@ fn test_int_greater_than() {
 @modname "com.tukunc.testmodule"
 fn main
   :entry
-    lpush 5
     lpush 3
+    lpush 4
     gt
-    lpush 2
-    lpush 3
+    lpush xFFFFFFFFFFFFFFFD;
+    lpush 1
     gt
     ret
 "#;
-    run_and_check_stack(input, &[rv_bool!(true), rv_bool!(false)]);
+    run_and_check_stack(input, &[rv_bool!(false), rv_bool!(true)]);
+}
+
+#[test]
+fn test_int_signed_greater_than() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+fn main
+  :entry
+    lpush 3
+    lpush 4
+    sgt
+    lpush xFFFFFFFFFFFFFFFD;
+    lpush 1
+    sgt
+    ret
+"#;
+    run_and_check_stack(input, &[rv_bool!(true), rv_bool!(true)]);
+}
+
+#[test]
+fn test_int_signed_less_than() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+fn main
+  :entry
+    lpush 3
+    lpush 4
+    slt
+    lpush xFFFFFFFFFFFFFFFD;
+    lpush 1
+    slt
+    ret
+"#;
+    run_and_check_stack(input, &[rv_bool!(false), rv_bool!(false)]);
 }
 
 #[test]
