@@ -24,6 +24,8 @@ pub enum Instruction {
     EQ,
     GT,
     LT,
+    SGT,
+    SLT,
     NOT,
     OR,
     AND,

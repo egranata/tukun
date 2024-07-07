@@ -84,6 +84,20 @@
         "trivial_lowering": true
     },
     {
+        "name": "SGT",
+        "pest_args": "",
+        "ast_args": [],
+        "trivial_ast": true,
+        "trivial_lowering": true
+    },
+    {
+        "name": "SLT",
+        "pest_args": "",
+        "ast_args": [],
+        "trivial_ast": true,
+        "trivial_lowering": true
+    },
+    {
         "name": "NOT",
         "pest_args": "",
         "ast_args": [],

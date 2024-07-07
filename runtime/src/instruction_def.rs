@@ -18,6 +18,8 @@ pub enum InstructionDef {
     EQ,
     LT,
     GT,
+    SLT,
+    SGT,
     AND,
     OR,
     I2B,
@@ -59,6 +61,8 @@ impl InstructionDef {
             InstructionDef::EQ => 1,
             InstructionDef::LT => 1,
             InstructionDef::GT => 1,
+            InstructionDef::SLT => 1,
+            InstructionDef::SGT => 1,
             InstructionDef::AND => 1,
             InstructionDef::OR => 1,
             InstructionDef::I2B => 1,
@@ -102,6 +106,8 @@ impl InstructionDef {
             InstructionDef::EQ => false,
             InstructionDef::LT => false,
             InstructionDef::GT => false,
+            InstructionDef::SLT => false,
+            InstructionDef::SGT => false,
             InstructionDef::AND => false,
             InstructionDef::OR => false,
             InstructionDef::I2B => false,
@@ -179,6 +185,12 @@ impl InstructionDef {
             }
             InstructionDef::GT => {
                 bc.write_u8(u8::from(crate::opcodes::Opcode::GT));
+            }
+            InstructionDef::SLT => {
+                bc.write_u8(u8::from(crate::opcodes::Opcode::SLT));
+            }
+            InstructionDef::SGT => {
+                bc.write_u8(u8::from(crate::opcodes::Opcode::SGT));
             }
             InstructionDef::AND => {
                 bc.write_u8(u8::from(crate::opcodes::Opcode::AND));

@@ -34,6 +34,8 @@ pub(crate) fn lower_instruction(
     trivial_lowering!(input, EQ);
     trivial_lowering!(input, GT);
     trivial_lowering!(input, LT);
+    trivial_lowering!(input, SGT);
+    trivial_lowering!(input, SLT);
     trivial_lowering!(input, NOT);
     trivial_lowering!(input, OR);
     trivial_lowering!(input, AND);

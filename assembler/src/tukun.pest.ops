@@ -12,6 +12,8 @@ stmt_NEWREC = {^"newrec" }
 stmt_EQ = {^"eq" }
 stmt_GT = {^"gt" }
 stmt_LT = {^"lt" }
+stmt_SGT = {^"sgt" }
+stmt_SLT = {^"slt" }
 stmt_NOT = {^"not" }
 stmt_OR = {^"or" }
 stmt_AND = {^"and" }
@@ -37,4 +39,4 @@ stmt_JTRUE = {^"jtrue" ~ #tgt = label}
 stmt_FCALL = {^"fcall" ~ #tgt = string}
 stmt_FROMSLOT = {^"fromslot" ~ #idx = integer}
 stmt_TOSLOT = {^"toslot" ~ #idx = integer}
-statement = {stmt_NOP | stmt_ADD | stmt_SUB | stmt_RET | stmt_FLOOKUP | stmt_TLOOKUP | stmt_CALL | stmt_NEWARR | stmt_NEWREC | stmt_EQ | stmt_GT | stmt_LT | stmt_NOT | stmt_OR | stmt_AND | stmt_DUP | stmt_SWAP | stmt_POP | stmt_ARRGET | stmt_ARRSET | stmt_ARRLEN | stmt_RECGET | stmt_RECSET | stmt_TYPEOF | stmt_I2B | stmt_I2F | stmt_B2I | stmt_F2I | stmt_MKARRTYPE | stmt_MKRECTYPE | stmt_PUSH | stmt_LPUSH | stmt_JUMP | stmt_JTRUE | stmt_FCALL | stmt_FROMSLOT | stmt_TOSLOT}
+statement = {stmt_NOP | stmt_ADD | stmt_SUB | stmt_RET | stmt_FLOOKUP | stmt_TLOOKUP | stmt_CALL | stmt_NEWARR | stmt_NEWREC | stmt_EQ | stmt_GT | stmt_LT | stmt_SGT | stmt_SLT | stmt_NOT | stmt_OR | stmt_AND | stmt_DUP | stmt_SWAP | stmt_POP | stmt_ARRGET | stmt_ARRSET | stmt_ARRLEN | stmt_RECGET | stmt_RECSET | stmt_TYPEOF | stmt_I2B | stmt_I2F | stmt_B2I | stmt_F2I | stmt_MKARRTYPE | stmt_MKRECTYPE | stmt_PUSH | stmt_LPUSH | stmt_JUMP | stmt_JTRUE | stmt_FCALL | stmt_FROMSLOT | stmt_TOSLOT}

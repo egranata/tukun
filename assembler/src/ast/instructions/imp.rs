@@ -23,6 +23,8 @@ impl super::Instruction {
         trivial_ast!(rule, stmt_EQ, EQ);
         trivial_ast!(rule, stmt_GT, GT);
         trivial_ast!(rule, stmt_LT, LT);
+        trivial_ast!(rule, stmt_SGT, SGT);
+        trivial_ast!(rule, stmt_SLT, SLT);
         trivial_ast!(rule, stmt_NOT, NOT);
         trivial_ast!(rule, stmt_OR, OR);
         trivial_ast!(rule, stmt_AND, AND);

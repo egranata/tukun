@@ -29,6 +29,19 @@ impl From<&InternValue> for RuntimeValue {
 }
 
 impl RuntimeValue {
+    pub fn as_unsigned_integer(&self) -> Option<u64> {
+        self.as_integer().copied()
+    }
+
+    pub fn as_signed_integer(&self) -> Option<i64> {
+        unsafe {
+            self.as_unsigned_integer()
+                .map(|x| std::mem::transmute::<u64, i64>(x))
+        }
+    }
+}
+
+impl RuntimeValue {
     pub fn get_type(&self) -> RuntimeType {
         match self {
             RuntimeValue::Integer(_) => RuntimeType::Integer,

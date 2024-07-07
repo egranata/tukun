@@ -213,12 +213,34 @@ fn bytecode_run_loop<'a>(ctx: &'a BytecodeContext<'a>, env: &mut Environment) ->
                 env.runtime_stack
                     .push(RuntimeValue::Logical(cmp == CompareResult::GreaterThan));
             }
+            RuntimeInstruction::SGT => {
+                let x = stack_pop!(cur_ptr, env, inst);
+                let y = stack_pop!(cur_ptr, env, inst);
+                if x.is_integer() && y.is_integer() {
+                    let cmp = compare_values(&x, &y, true);
+                    env.runtime_stack
+                        .push(RuntimeValue::Logical(cmp == CompareResult::GreaterThan));
+                } else {
+                    err_ret!(cur_ptr, RunloopErrData::InvalidOperands(inst, vec![x, y]));
+                }
+            }
             RuntimeInstruction::LT => {
                 let x = stack_pop!(cur_ptr, env, inst);
                 let y = stack_pop!(cur_ptr, env, inst);
                 let cmp = compare_values(&x, &y, false);
                 env.runtime_stack
                     .push(RuntimeValue::Logical(cmp == CompareResult::LessThan));
+            }
+            RuntimeInstruction::SLT => {
+                let x = stack_pop!(cur_ptr, env, inst);
+                let y = stack_pop!(cur_ptr, env, inst);
+                if x.is_integer() && y.is_integer() {
+                    let cmp = compare_values(&x, &y, true);
+                    env.runtime_stack
+                        .push(RuntimeValue::Logical(cmp == CompareResult::LessThan));
+                } else {
+                    err_ret!(cur_ptr, RunloopErrData::InvalidOperands(inst, vec![x, y]));
+                }
             }
             RuntimeInstruction::JUMP(dst) => {
                 ip = dst as usize;

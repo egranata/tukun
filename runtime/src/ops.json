@@ -112,6 +112,20 @@
         "is_terminal": false
     },
     {
+        "name": "SLT",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    },
+    {
+        "name": "SGT",
+        "runtime_operands": [],
+        "builder_operands": [],
+        "operand_writers": [],
+        "is_terminal": false
+    },
+    {
         "name": "AND",
         "runtime_operands": [],
         "builder_operands": [],
