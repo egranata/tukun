@@ -1,9 +1,10 @@
 WHITESPACE = _{ " " | "\t" | "\r" | "\n" }
 
+hex_digit = { '0'..'9' | 'a'..'f' | 'A'..'F' }
 alpha = { 'a'..'z' | 'A'..'Z' }
 digit = { '0'..'9' }
 ident = @{ !digit ~ (alpha | digit)+ }
-integer = { digit+ }
+integer = { digit+ | ("x" ~ hex_digit+ ~ ";") }
 float = { digit+ ~ "." ~ digit* }
 label = @{":" ~ ident}
 string = ${ "\"" ~ inner ~ "\"" }

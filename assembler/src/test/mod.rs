@@ -77,6 +77,19 @@ fn main
 }
 
 #[test]
+fn test_int_value() {
+    let input = r#"
+@modname "com.tukunc.testmodule"
+fn main
+  :entry
+    lpush 6
+    lpush xFe;
+    ret
+"#;
+    run_and_check_stack(input, &[rv_int!(254), rv_int!(6)]);
+}
+
+#[test]
 fn test_call_function_with_name() {
     let input = r#"
 @modname "com.tukunc.testmodule"

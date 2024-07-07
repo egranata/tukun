@@ -16,9 +16,9 @@ pub(crate) fn from_parse_tree(p: pest::iterators::Pair<'_, Rule>) -> AssemblerRe
             Rule::float => {
                 InternValue::Float(val.as_str().parse::<f64>().expect("invalid floating value"))
             }
-            Rule::integer => {
-                InternValue::Integer(val.as_str().parse::<u64>().expect("invalid integer value"))
-            }
+            Rule::integer => InternValue::Integer(
+                crate::ast::parse_integer_value(val.as_str()).expect("invalid integer value"),
+            ),
             Rule::string => InternValue::String(parse_string_trim(val.as_str())),
             _ => panic!("unexpected value {val}"),
         };

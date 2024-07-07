@@ -29,7 +29,8 @@ impl Constant {
                 Rule::interned_integer => {
                     let inner = bb.into_inner();
                     let value = inner.find_first_tagged("value").expect("need a value");
-                    let value = value.as_str().parse::<u64>().expect("invalid integer");
+                    let value = value.as_str();
+                    let value = crate::ast::parse_integer_value(value).expect("parse error");
                     let name = inner.find_first_tagged("name").expect("need a name");
                     let name = parse_string_trim(name.as_str());
                     Ok(Self {
